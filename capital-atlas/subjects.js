@@ -83,7 +83,7 @@ export function nameForms(c) {
 /* ---------------- flags ---------------- */
 // Shown with a flag once it has been answered or looked at (never before: it would give it away)
 export const FLAG_NOTES = {
-	AFG: 'This is the flag of the Islamic Republic, still used by the UN, the Olympics and many embassies. Since 2021 the Taliban government has used a white flag with the shahada in black.',
+	AFG: 'The main flag here is the Islamic Republic’s, still used by the UN, the Olympics and many embassies.',
 	SYR: 'Adopted in 2025, after the fall of the Assad government. Until then Syria’s flag was red, white and black with two green stars.',
 	KGZ: 'Redrawn in 2023 with straight rays; the old flag’s rays were wavy.',
 	TCD: 'Almost the same as Romania’s: Chad’s blue is a little darker.',
@@ -119,6 +119,7 @@ export const FLAG_NOTES = {
 // flag-atlas/flags/VERSION-SOURCES.md). They show beside the main flag in Study and once answered, and are
 // asked about too when "Either version" is on (setFlagVersions). main: what the main picture is.
 export const FLAG_VERSIONS = {
+	AFG: { main: 'Flag of the Islamic Republic', others: [['AFG-emirate', 'Flag of the Taliban government (since 2021)']] },
 	AND: { main: 'State and civil flag', others: [['AND-civil', 'Optional civil flag']] },
 	ARG: { main: 'State and civil flag', others: [['ARG-civil', 'Optional civil flag']] },
 	AUT: { main: 'Civil flag', others: [['AUT-state', 'State flag']] },
@@ -152,6 +153,7 @@ export const FLAG_VERSIONS = {
 // What the versions are, in a sentence: shown with the flag note. A country added without one gets a sentence
 // built from the labels above (versionsLine)
 const VERSION_NOTES = {
+	AFG: 'Since 2021 the Taliban government has used a white flag with the shahada in black.',
 	AND: 'The optional civil flag leaves out the coat of arms; then it’s very like Chad’s and Romania’s.',
 	ARG: 'The optional civil flag leaves out the Sun of May.',
 	AUT: 'The state flag adds Austria’s coat of arms (a black eagle) in the middle.',

@@ -1,5 +1,13 @@
 {
 	"_about": "Other versions of national flags, downloaded from Wikimedia Commons by fetch-flag-versions.mjs into flag-atlas/flags/<file>.svg. titles: Commons file names to try, in order (the first that exists is used). search: what to search Commons for when none exists. Once a file is confirmed, keep just its one title.",
+	"AFG-emirate": {
+		"titles": [
+			"Flag of the Taliban.svg",
+			"Flag of the Islamic Emirate of Afghanistan.svg",
+			"Flag of Afghanistan (2021).svg"
+		],
+		"search": "Islamic Emirate of Afghanistan flag"
+	},
 	"AND-civil": {
 		"titles": [
 			"Flag of Andorra (civil).svg"
@@ -144,15 +152,15 @@
 		],
 		"search": "flag of Paraguay reverse"
 	},
-	"SLV-civil": {
-		"titles": [
-			"Civil Flag of El Salvador.svg"
-		],
-		"search": "El Salvador flag"
-	},
 	"SLV-alt": {
 		"titles": [
 			"Civil Ensign of El Salvador.svg"
+		],
+		"search": "El Salvador flag"
+	},
+	"SLV-civil": {
+		"titles": [
+			"Civil Flag of El Salvador.svg"
 		],
 		"search": "El Salvador flag"
 	},
