@@ -113,13 +113,118 @@ export const FLAG_NOTES = {
 	CHE: 'Square, like the Vatican’s.',
 	VAT: 'Square, like Switzerland’s.',
 };
+// Flags with more than one official version: a state flag and a civil flag, optional or alternative versions,
+// a co-official flag, or a different back. The main picture is flags/<id>.svg; each other version is
+// flags/<file>.svg, downloaded from Wikimedia Commons by scripts/fetch-flag-versions.mjs (sources in
+// flag-atlas/flags/VERSION-SOURCES.md). They show beside the main flag in Study and once answered, and are
+// asked about too when "Either version" is on (setFlagVersions). main: what the main picture is.
+export const FLAG_VERSIONS = {
+	AND: { main: 'State and civil flag', others: [['AND-civil', 'Optional civil flag']] },
+	ARG: { main: 'State and civil flag', others: [['ARG-civil', 'Optional civil flag']] },
+	AUT: { main: 'Civil flag', others: [['AUT-state', 'State flag']] },
+	BOL: { main: 'State flag', others: [['BOL-civil', 'Civil flag'], ['BOL-wiphala', 'Wiphala, a second national flag']] },
+	CRI: { main: 'State flag', others: [['CRI-civil', 'Civil flag']] },
+	DEU: { main: 'Civil flag', others: [['DEU-state', 'State flag']] },
+	DNK: { main: 'Civil flag', others: [['DNK-state', 'State flag']] },
+	DOM: { main: 'State flag', others: [['DOM-civil', 'Civil flag']] },
+	ESP: { main: 'State and civil flag', others: [['ESP-civil', 'Optional civil flag']] },
+	FIN: { main: 'Civil flag', others: [['FIN-state', 'State flag']] },
+	GTM: { main: 'State flag', others: [['GTM-civil', 'Civil flag']] },
+	HTI: { main: 'State flag', others: [['HTI-civil', 'Civil flag']] },
+	HUN: { main: 'State and civil flag', others: [['HUN-state', 'Optional state flag']] },
+	ISL: { main: 'Civil flag', others: [['ISL-state', 'State flag']] },
+	ITA: { main: 'Civil flag', others: [['ITA-state', 'State flag (at sea only)']] },
+	LIE: { main: 'Civil flag', others: [['LIE-state', 'State flag']] },
+	MCO: { main: 'Civil flag', others: [['MCO-state', 'State flag']] },
+	NGA: { main: 'Civil flag', others: [['NGA-state', 'State flag']] },
+	NIC: { main: 'State and civil flag', others: [['NIC-alt', 'Alternative state flag']] },
+	NOR: { main: 'Civil flag', others: [['NOR-state', 'State flag']] },
+	PER: { main: 'State flag', others: [['PER-civil', 'Civil flag']] },
+	POL: { main: 'Civil flag', others: [['POL-state', 'State flag']] },
+	PRY: { main: 'Front', others: [['PRY-reverse', 'Back']] },
+	SLV: { main: 'State flag', others: [['SLV-civil', 'Civil flag'], ['SLV-alt', 'Alternative state flag']] },
+	SMR: { main: 'State flag', others: [['SMR-civil', 'Civil flag']] },
+	SRB: { main: 'State flag', others: [['SRB-civil', 'Civil flag']] },
+	TUV: { main: 'State and civil flag', others: [['TUV-alt', 'Alternative state flag']] },
+	URY: { main: 'State and civil flag', others: [['URY-artigas', 'Artigas flag (alternative state flag)'], ['URY-33', 'Flag of the Treinta y Tres (alternative state flag)']] },
+	VEN: { main: 'Civil flag', others: [['VEN-state', 'State flag']] },
+};
+// What the versions are, in a sentence: shown with the flag note. A country added without one gets a sentence
+// built from the labels above (versionsLine)
+const VERSION_NOTES = {
+	AND: 'The optional civil flag leaves out the coat of arms; then it’s very like Chad’s and Romania’s.',
+	ARG: 'The optional civil flag leaves out the Sun of May.',
+	AUT: 'The state flag adds Austria’s coat of arms (a black eagle) in the middle.',
+	BOL: 'The coat of arms is on the state flag; the civil flag is plain. The Wiphala, chequered in seven colours, is a second national flag.',
+	CRI: 'The civil flag has no coat of arms; then it’s Thailand’s with the red and blue swapped.',
+	DEU: 'The federal government’s flag adds the eagle on a shield, a little toward the pole.',
+	DNK: 'The state flag is swallow-tailed.',
+	DOM: 'The civil flag has no coat of arms in the middle of the white cross.',
+	ESP: 'The optional civil flag leaves out the coat of arms.',
+	FIN: 'The state flag adds the coat of arms where the arms of the cross meet.',
+	GTM: 'The civil flag has no coat of arms: just sky blue, white and sky blue.',
+	HTI: 'The civil flag has no white panel or coat of arms: just blue over red.',
+	HUN: 'The optional state flag adds the coat of arms in the middle.',
+	ISL: 'The state flag is swallow-tailed.',
+	ITA: 'At sea, the state flag adds a crowned shield with the arms of Venice, Genoa, Amalfi and Pisa.',
+	LIE: 'The state flag adds the prince’s coat of arms in the middle.',
+	MCO: 'The state flag is white, with the prince’s coat of arms.',
+	NGA: 'The state flag adds the coat of arms on the white stripe.',
+	NIC: 'The alternative state flag is a plain red and black flag.',
+	NOR: 'The state flag is swallow-tailed, with a tongue in the middle.',
+	PER: 'The coat of arms is on the state flag; the civil flag is plain red, white and red.',
+	POL: 'The state flag adds the coat of arms, a white eagle, on the white stripe.',
+	PRY: 'The only national flag with different sides: the national seal on the front, the treasury seal (a lion) on the back.',
+	SLV: 'The civil flag has no coat of arms; the alternative state flag has the motto “Dios Unión Libertad” in gold instead.',
+	SMR: 'The civil flag has no coat of arms: just white over light blue.',
+	SRB: 'The civil flag has no coat of arms; then it’s Russia’s colours upside down.',
+	TUV: 'The alternative state flag adds Tuvalu’s coat of arms, a shield, in the fly.',
+	URY: 'Two historical flags are also official state flags: Artigas’s, with a red diagonal band, and the Treinta y Tres’s, “Libertad o Muerte”.',
+	VEN: 'The state flag adds the coat of arms in the top corner by the pole.',
+};
+const otherVersions = (id) => FLAG_VERSIONS[id]?.others ?? [];
+const versionLabel = (file) => {
+	for (const [id, v] of Object.entries(FLAG_VERSIONS)) {
+		if (file === id) return v.main;
+		const o = v.others.find(([f]) => f === file);
+		if (o) return o[1];
+	}
+	return '';
+};
+const versionsLine = (id) => {
+	const v = FLAG_VERSIONS[id];
+	if (!v) return '';
+	return uiText('flag_versions.' + id) ?? VERSION_NOTES[id] ?? `Other versions: ${v.others.map(([, l]) => l).join('; ')}.`;
+};
+let eitherVersion = false; // "Either version": questions show any version of a flag, at random
+const picked = new Map(); // which version each question showed, kept for the session
+export function setFlagVersions(either) {
+	eitherVersion = !!either;
+	picked.clear();
+}
+export const resetFlagPicks = () => picked.clear();
+function askedFlag(c) {
+	const others = otherVersions(c.id);
+	if (!eitherVersion || !others.length) return c.id;
+	if (!picked.has(c.id)) {
+		const all = [c.id, ...others.map(([f]) => f)];
+		picked.set(c.id, all[Math.floor(Math.random() * all.length)]);
+	}
+	return picked.get(c.id);
+}
+// the version that was asked about, and the rest to show beside it once answered
+const revealFlags = (c) => {
+	const a = askedFlag(c);
+	return { flag: a, flag2: [c.id, ...otherVersions(c.id).map(([f]) => f)].filter((f) => f !== a) };
+};
+export const flagLabel = versionLabel;
 // The picture of a country's flag (World Flags only): flag-atlas/flags/<id>.svg, from the folder of this file
 export const flagUrl = (id) => new URL(`../flag-atlas/flags/${id}.svg`, import.meta.url).href;
 
 /* ---------------- the three subjects ---------------- */
 // A capital's note (countries.json) and a flag's note, in the language in use where they've been translated
 const note = (c) => uiText('note.' + c.id) ?? c.note ?? '';
-const flagNote = (c) => uiText('flag.' + c.id) ?? FLAG_NOTES[c.id] ?? '';
+const flagNote = (c) => join(uiText('flag.' + c.id) ?? FLAG_NOTES[c.id] ?? '', versionsLine(c.id));
 const join = (...parts) => parts.filter(Boolean).join(' ');
 const capitals = {
 	key: 'capitals',
@@ -189,14 +294,15 @@ const flags = {
 	fact: (c) => t('flags.fact', { name: nameOf(c) }),
 	outside: (c, region) => t('flags.outside', { name: nameOf(c), region }),
 	missClick: (c, clicked) => t('flags.miss_click', { name: nameOf(c), clicked: nameOf(clicked) }),
-	callout: (c) => ({ title: nameOf(c), sub: '', flag: c.id }),
+	callout: (c) => ({ title: nameOf(c), sub: '', flag: askedFlag(c) }),
 	lightTyped: false, // the flag is the question: lighting the country would give the answer away
 	placeholder: () => t('flags.placeholder'),
-	study: (c) => ({ name: nameOf(c), flag: c.id, tip: flagNote(c) }),
-	clickAsk: (c) => ({ eyebrow: t('flags.click_ask'), name: '', flag: c.id }),
-	clickReveal: (c) => ({ eyebrow: t('here_it_is'), name: nameOf(c), flag: c.id, tip: flagNote(c) }),
-	typeAsk: (c) => ({ eyebrow: t('flags.type_ask'), name: '', flag: c.id }),
-	typeReveal: (c) => ({ eyebrow: t('flags.type_reveal'), name: nameOf(c), flag: c.id, tip: join(t('type_it'), flagNote(c)) }),
+	study: (c) => ({ name: nameOf(c), flag: c.id, flag2: otherVersions(c.id).map(([f]) => f), tip: flagNote(c) }),
+	clickAsk: (c) => ({ eyebrow: t('flags.click_ask'), name: '', flag: askedFlag(c) }),
+	clickReveal: (c) => ({ eyebrow: t('here_it_is'), name: nameOf(c), ...revealFlags(c), tip: flagNote(c) }),
+	typeAsk: (c) => ({ eyebrow: t('flags.type_ask'), name: '', flag: askedFlag(c) }),
+	typeReveal: (c) => ({ eyebrow: t('flags.type_reveal'), name: nameOf(c), ...revealFlags(c), tip: join(t('type_it'), flagNote(c)) }),
+	versions: true, // has flags with more than one version (FLAG_VERSIONS), and the "Either version" setting
 	hint: (k) => t('flags.' + k + '_hint'),
 };
 export const SUBJECTS = { capitals, countries, flags };

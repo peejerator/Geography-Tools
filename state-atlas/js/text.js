@@ -10,7 +10,7 @@
 export const EN = {
 	/* ---------- the page ---------- */
 	map_aria: 'Map. Drag to turn it, scroll or pinch to zoom, click a country or a region.',
-	home_aria: 'SampleSize_1 home page',
+	home_aria: 'Home page',
 	sub: 'Learn the regions of every country',
 	title: 'States & Provinces',
 	pick_country: 'Pick a country',

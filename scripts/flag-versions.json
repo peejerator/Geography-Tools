@@ -1,0 +1,195 @@
+{
+	"_about": "Other versions of national flags, downloaded from Wikimedia Commons by fetch-flag-versions.mjs into flag-atlas/flags/<file>.svg. titles: Commons file names to try, in order (the first that exists is used). search: what to search Commons for when none exists. Once a file is confirmed, keep just its one title.",
+	"AND-civil": {
+		"titles": [
+			"Flag of Andorra (civil).svg"
+		],
+		"search": "civil flag of Andorra"
+	},
+	"ARG-civil": {
+		"titles": [
+			"Flag of Argentina (civil).svg"
+		],
+		"search": "civil flag of Argentina"
+	},
+	"AUT-state": {
+		"titles": [
+			"Flag of Austria (state).svg"
+		],
+		"search": "state flag of Austria"
+	},
+	"BOL-civil": {
+		"titles": [
+			"Flag of Bolivia.svg"
+		],
+		"search": "Bolivia flag"
+	},
+	"BOL-wiphala": {
+		"titles": [
+			"Banner of the Qulla Suyu (1979).svg"
+		],
+		"search": "Wiphala Qullasuyu"
+	},
+	"CRI-civil": {
+		"titles": [
+			"Flag of Costa Rica.svg"
+		],
+		"search": "Costa Rica flag"
+	},
+	"DEU-state": {
+		"titles": [
+			"Flag of Germany (state).svg"
+		],
+		"search": "Bundesdienstflagge"
+	},
+	"DNK-state": {
+		"titles": [
+			"Flag of Denmark (state).svg"
+		],
+		"search": "state flag of Denmark Splitflag"
+	},
+	"DOM-civil": {
+		"titles": [
+			"Civil Ensign of the Dominican Republic.svg"
+		],
+		"search": "Dominican Republic flag"
+	},
+	"ESP-civil": {
+		"titles": [
+			"Flag of Spain (civil).svg"
+		],
+		"search": "civil flag of Spain"
+	},
+	"FIN-state": {
+		"titles": [
+			"Flag of Finland (state).svg"
+		],
+		"search": "state flag of Finland"
+	},
+	"GTM-civil": {
+		"titles": [
+			"Civil ensign of Guatemala.svg"
+		],
+		"search": "Guatemala flag"
+	},
+	"HTI-civil": {
+		"titles": [
+			"Flag of Haiti (civil).svg"
+		],
+		"search": "civil flag of Haiti"
+	},
+	"HUN-state": {
+		"titles": [
+			"Flag of Hungary with arms.svg"
+		],
+		"search": "Hungary flag coat of arms"
+	},
+	"ISL-state": {
+		"titles": [
+			"Flag of Iceland (state).svg"
+		],
+		"search": "state flag of Iceland"
+	},
+	"ITA-state": {
+		"titles": [
+			"Naval ensign of Italy.svg"
+		],
+		"search": "naval ensign of Italy"
+	},
+	"LIE-state": {
+		"titles": [
+			"Flag of Liechtenstein (state).svg"
+		],
+		"search": "state flag of Liechtenstein"
+	},
+	"MCO-state": {
+		"titles": [
+			"Flag of Monaco (state).svg"
+		],
+		"search": "state flag of Monaco"
+	},
+	"NGA-state": {
+		"titles": [
+			"Flag of Nigeria (state).svg"
+		],
+		"search": "state flag of Nigeria"
+	},
+	"NIC-alt": {
+		"titles": [
+			"Red and black flag.svg"
+		],
+		"search": "Nicaragua flag"
+	},
+	"NOR-state": {
+		"titles": [
+			"Flag of Norway (state).svg"
+		],
+		"search": "state flag of Norway"
+	},
+	"PER-civil": {
+		"titles": [
+			"Flag of Peru.svg"
+		],
+		"search": "Peru flag"
+	},
+	"POL-state": {
+		"titles": [
+			"Flag of Poland (with coat of arms).svg"
+		],
+		"search": "flag of Poland with coat of arms"
+	},
+	"PRY-reverse": {
+		"titles": [
+			"Flag of Paraguay (reverse).svg"
+		],
+		"search": "flag of Paraguay reverse"
+	},
+	"SLV-civil": {
+		"titles": [
+			"Civil Flag of El Salvador.svg"
+		],
+		"search": "El Salvador flag"
+	},
+	"SLV-alt": {
+		"titles": [
+			"Civil Ensign of El Salvador.svg"
+		],
+		"search": "El Salvador flag"
+	},
+	"SMR-civil": {
+		"titles": [
+			"Flag of San Marino (civil).svg"
+		],
+		"search": "civil flag of San Marino"
+	},
+	"SRB-civil": {
+		"titles": [
+			"Civil flag of Serbia.svg"
+		],
+		"search": "civil flag of Serbia"
+	},
+	"TUV-alt": {
+		"titles": [
+			"Flag of Tuvalu (state).svg"
+		],
+		"search": "Tuvalu flag"
+	},
+	"URY-33": {
+		"titles": [
+			"Flag of the Treinta y Tres.svg"
+		],
+		"search": "flag of the Treinta y Tres"
+	},
+	"URY-artigas": {
+		"titles": [
+			"Flag of Artigas.svg"
+		],
+		"search": "flag of Artigas"
+	},
+	"VEN-state": {
+		"titles": [
+			"Flag of Venezuela (state).svg"
+		],
+		"search": "state flag of Venezuela"
+	}
+}
