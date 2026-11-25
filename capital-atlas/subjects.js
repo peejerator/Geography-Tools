@@ -228,17 +228,25 @@ export const flagUrl = (id) => new URL(`../flag-atlas/flags/${id}.svg`, import.m
 const note = (c) => uiText('note.' + c.id) ?? c.note ?? '';
 const flagNote = (c) => join(uiText('flag.' + c.id) ?? FLAG_NOTES[c.id] ?? '', versionsLine(c.id));
 const join = (...parts) => parts.filter(Boolean).join(' ');
+// World Capitals' third question type, "Type the country": the capital is given and the country typed. The
+// parts of a question that change with it ask rev() (setCapitalsReverse switches it)
+let reverse = false;
+export function setCapitalsReverse(on) {
+	reverse = !!on;
+}
+const rev = (forward, backward) => (...a) => (reverse ? backward : forward)(...a);
 const capitals = {
 	key: 'capitals',
 	tool: 'capital-atlas', // the folder, and the id its progress is saved under
 	name: 'World Capitals',
-	answer: (c) => capitalOf(c), // what a typed answer has to be (as shown)
-	// what counts: the capital in the language in use, and in English with its other names
-	forms: (c) => [...localCapitals(c), c.capital, ...(c.alts || [])],
-	former: (c) => c.formerly || [],
-	formerMsg: (typed) => t('capitals.former', { typed }),
+	answer: rev((c) => capitalOf(c), (c) => nameOf(c)), // what a typed answer has to be (as shown)
+	// what counts: the capital in the language in use, and in English with its other names (or, typing the
+	// country, its names)
+	forms: rev((c) => [...localCapitals(c), c.capital, ...(c.alts || [])], (c) => [...localNames(c), ...nameForms(c)]),
+	former: rev((c) => c.formerly || [], (c) => COUNTRY_FORMER[c.id] || []),
+	formerMsg: rev((typed) => t('capitals.former', { typed }), (typed) => t('countries.former', { typed })),
 	otherMsg: (o) => t('capitals.other', { capital: capitalOf(o), name: nameOf(o) }),
-	tell: (c) => t('capitals.tell', { name: nameOf(c), capital: capitalOf(c) }),
+	tell: rev((c) => t('capitals.tell', { name: nameOf(c), capital: capitalOf(c) }), (c) => t('capitals.capital_of', { capital: capitalOf(c), name: nameOf(c) })),
 	fact: (c) => t('capitals.fact', { name: nameOf(c), capital: capitalOf(c) }), // a country named, with what it teaches
 	outside: (c, region) => t('capitals.outside', { name: nameOf(c), capital: capitalOf(c), region }),
 	missClick: (c) => t('capitals.miss_click', { name: nameOf(c) }), // a wrong click: c was asked for
@@ -247,15 +255,25 @@ const capitals = {
 	dots: true, // a dot on every capital
 	waterNames: true, // the names of oceans, seas, lakes and rivers show until a visitor turns them off (L)
 	around: [7, 4.5], // the least a view of one country shows: degrees of longitude and latitude each side of its middle
-	lightTyped: true, // typed questions light up the country being asked about
-	namesAnswer: false, // a country's name answers a question (so voice can't fly to one mid-quiz)
-	placeholder: () => t('capitals.placeholder'),
+	// typed questions light up the country being asked about (not when the country is the answer)
+	get lightTyped() {
+		return !reverse;
+	},
+	// a country's name answers a question (so voice can't fly to one mid-quiz)
+	get namesAnswer() {
+		return reverse;
+	},
+	placeholder: rev(() => t('capitals.placeholder'), () => t('countries.placeholder')),
 	study: (c) => ({ name: t('capitals.pair', { name: nameOf(c), capital: capitalOf(c) }), tip: note(c) }),
 	clickAsk: (c) => ({ eyebrow: t('capitals.click_ask'), name: capitalOf(c) }),
 	clickReveal: (c) => ({ eyebrow: t('here_it_is'), name: capitalOf(c), tip: join(t('capitals.capital_of', { capital: capitalOf(c), name: nameOf(c) }), note(c)) }),
-	typeAsk: (c) => ({ eyebrow: t('capitals.type_ask'), name: nameOf(c) }),
-	typeReveal: (c) => ({ eyebrow: t('capitals.type_reveal', { name: nameOf(c) }), name: capitalOf(c), tip: join(t('type_it'), note(c)) }),
-	hint: (k) => t('capitals.' + k + '_hint'), // study, click, type, type_hard
+	typeAsk: rev((c) => ({ eyebrow: t('capitals.type_ask'), name: nameOf(c) }), (c) => ({ eyebrow: t('capitals.rev_type_ask'), name: capitalOf(c) })),
+	typeReveal: rev(
+		(c) => ({ eyebrow: t('capitals.type_reveal', { name: nameOf(c) }), name: capitalOf(c), tip: join(t('type_it'), note(c)) }),
+		(c) => ({ eyebrow: t('capitals.rev_type_reveal', { capital: capitalOf(c) }), name: nameOf(c), tip: join(t('type_it'), note(c)) }),
+	),
+	hint: (k) => t('capitals.' + (reverse && k.startsWith('type') ? 'rev_' : '') + k + '_hint'), // study, click, type, type_hard
+	reversible: true, // has "Type the country" (setCapitalsReverse)
 };
 const countries = {
 	key: 'countries',

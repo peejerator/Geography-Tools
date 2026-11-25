@@ -10,7 +10,7 @@
 import {
 	geoOrthographic, geoNaturalEarth1, geoPath, geoGraticule10, geoContains, geoBounds, geoCentroid, geoDistance, geoArea, feature,
 } from './geo.js';
-import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks } from './subjects.js';
+import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks, setCapitalsReverse } from './subjects.js';
 import { EN, t, useLanguage, lang, locale, nameOf, capitalOf, placeName, waterName } from './text.js';
 
 const $ = (id) => document.getElementById(id);
@@ -146,6 +146,8 @@ const state = {
 	format: oneOf(store.get('format', 'click'), ['click', 'type'], 'click'),
 	region: validRegion(store.get('region', 'world')),
 	either: S.versions === true && store.get('flagVersions', 'main') === 'either', // World Flags: ask about either version of a flag
+	// World Capitals' "Type the country": typing, with the capital given (format stays 'type')
+	reverse: S.reversible === true && store.get('reverse', false) === true,
 	mix: store.get('mixRegions', false) === true, // the rail's Combine toggle: a click adds or removes a region
 	view: oneOf(store.get('view', 'globe'), ['globe', 'map'], 'globe'),
 	level: oneOf(store.get('level', 'easy'), ['easy', 'hard'], 'easy'),
@@ -171,6 +173,7 @@ let COUNTRIES = [];
 const BY_ID = new Map();
 const LOD = { xlow: null, low: null, mid: null, high: null }; // GeoJSON features at four levels of detail (same order)
 setFlagVersions(state.either);
+setCapitalsReverse(state.reverse && state.format === 'type');
 let META = []; // per feature: { i, id, country, name, of, c, r, area, box }
 
 const inRegion = (c, key) => key === 'world' || c.region === key || (SUB_IDS.has(key) && SUB_IDS.get(key).has(c.id));
@@ -1699,7 +1702,9 @@ function drawPins(ctx, p, selId) {
 
 /* ---------------- quiz (practice / test) ---------------- */
 let session = null, sessionSeq = 0, review = null;
-const statKey = (id) => `${state.format}:${id}`;
+// the question type as the Questions buttons show it: 'click', 'type', or (World Capitals) 'rev', typing the country
+const fmtKey = () => (state.format === 'type' && state.reverse ? 'rev' : state.format);
+const statKey = (id) => `${fmtKey()}:${id}`;
 function shuffle(a) {
 	for (let i = a.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
@@ -1924,7 +1929,7 @@ function skip() {
 	renderStats();
 }
 function bestKey() {
-	return `${state.mode}|${state.format}|${state.level}|${state.region}${state.either ? '|either' : ''}`;
+	return `${state.mode}|${fmtKey()}|${state.level}|${state.region}${state.either ? '|either' : ''}`;
 }
 function finishSession() {
 	session.end = performance.now();
@@ -2260,7 +2265,7 @@ const MODE_HINT = { study: () => S.hint('study'), practice: () => t('hint_practi
 const FORMAT_HINT = { click: () => S.hint('click'), type: () => S.hint('type') };
 function renderSegs() {
 	$('imagesModeBtn').hidden = !state.pins; // the hidden mode shows up in the bar only while it's on
-	for (const [id, v] of [['modeSeg', state.pins ? 'images' : state.mode], ['formatSeg', state.format], ['viewSeg', state.view]]) {
+	for (const [id, v] of [['modeSeg', state.pins ? 'images' : state.mode], ['formatSeg', fmtKey()], ['viewSeg', state.view]]) {
 		for (const b of $(id).querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === v));
 	}
 	$('modeHint').textContent = state.pins
@@ -2326,8 +2331,12 @@ function setMode(m, restart = true) {
 	if (restart) startSession();
 }
 function setFormat(f) {
-	state.format = f;
-	store.set('format', f);
+	state.reverse = f === 'rev';
+	state.format = f === 'rev' ? 'type' : f;
+	store.set('format', state.format);
+	store.set('reverse', state.reverse);
+	setCapitalsReverse(state.reverse);
+	if (COUNTRIES.length) checkAnswer = makeChecker(S, COUNTRIES); // the answers changed
 	renderSegs();
 	renderBest();
 	startSession();
@@ -2354,7 +2363,7 @@ $('modeSeg').addEventListener('click', (e) => {
 });
 $('formatSeg').addEventListener('click', (e) => {
 	const b = e.target.closest('button[data-v]');
-	if (!b || b.dataset.v === state.format) return;
+	if (!b || b.dataset.v === fmtKey()) return;
 	guardTest(t('changing_format'), () => setFormat(b.dataset.v));
 });
 $('viewSeg').addEventListener('click', (e) => {
