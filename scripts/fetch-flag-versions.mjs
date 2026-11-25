@@ -3,6 +3,8 @@
 //
 //   node scripts/fetch-flag-versions.mjs            all of scripts/flag-versions.json
 //   node scripts/fetch-flag-versions.mjs BOL-civil  just these
+//   node scripts/fetch-flag-versions.mjs 'GTM-civil=Flag of Guatemala (civil).svg'
+//                                                   this Commons file for it (saved in the manifest)
 //
 // For each file it asks the Commons API for the first title in the list that exists, downloads the original
 // SVG, checks its SHA-1 against the one Commons reports, and saves it as flag-atlas/flags/<file>.svg. Where
@@ -74,7 +76,17 @@ async function search(q) {
 }
 
 const manifest = JSON.parse(await readFile(MANIFEST, 'utf8'));
-const only = process.argv.slice(2);
+const only = [];
+let pinned = false;
+for (const arg of process.argv.slice(2)) {
+	const [file, title] = arg.split(/=(.*)/s);
+	only.push(file);
+	if (title && manifest[file]) {
+		manifest[file].titles = [title.replace(/^File:/, '')];
+		pinned = true;
+	}
+}
+if (pinned) await writeFile(MANIFEST, JSON.stringify(manifest, null, '\t') + '\n');
 const files = Object.keys(manifest).filter((k) => !k.startsWith('_') && (!only.length || only.includes(k)));
 const unknown = only.filter((k) => !manifest[k]);
 if (unknown.length) {

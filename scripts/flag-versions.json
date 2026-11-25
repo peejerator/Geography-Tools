@@ -50,9 +50,7 @@
 	},
 	"DOM-civil": {
 		"titles": [
-			"Civil Flag of the Dominican Republic.svg",
-			"Civil flag of Dominican Republic.svg",
-			"Flag of Dominican Republic (civil).svg"
+			"Civil Ensign of the Dominican Republic.svg"
 		],
 		"search": "Dominican Republic flag"
 	},
@@ -84,9 +82,7 @@
 	},
 	"HUN-state": {
 		"titles": [
-			"Flag of Hungary (with coat of arms).svg",
-			"Flag of Hungary with arms.svg",
-			"State flag of Hungary.svg"
+			"Flag of Hungary with arms.svg"
 		],
 		"search": "Hungary flag coat of arms"
 	},
@@ -176,7 +172,7 @@
 	},
 	"TUV-alt": {
 		"titles": [
-			"Flag of Tuvalu (alternative).svg"
+			"Flag of Tuvalu (state).svg"
 		],
 		"search": "Tuvalu flag"
 	},
