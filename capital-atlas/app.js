@@ -10,7 +10,7 @@
 import {
 	geoOrthographic, geoNaturalEarth1, geoPath, geoGraticule10, geoContains, geoBounds, geoCentroid, geoDistance, geoArea, feature,
 } from './geo.js';
-import { norm, subjectFor, makeChecker, flagUrl } from './subjects.js';
+import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks } from './subjects.js';
 import { EN, t, useLanguage, lang, locale, nameOf, capitalOf, placeName, waterName } from './text.js';
 
 const $ = (id) => document.getElementById(id);
@@ -111,6 +111,32 @@ const AREAS = {
 const EN_REGION = new Set([...REGIONS, ...SUBREGIONS].map((r) => r.key).concat('pacific'));
 // every subregion is also a place to zoom to (this replaces the older boxes of the same name)
 for (const s of SUBREGIONS) AREAS[s.key] = { label: s.label, box: s.box };
+// Several regions at once: state.region is one key ('asia') or several joined with '+' ('asia+oceania'),
+// always in the rail's order, so each combination has one key (and its own best scores)
+const RAIL_ORDER = [...REGIONS, ...SUBREGIONS].map((r) => r.key);
+const regionKeys = (key) => key.split('+');
+function normRegion(keys) {
+	let ks = [...new Set(keys)].filter((k) => REGION[k]);
+	if (!ks.length || ks.includes('world')) return 'world';
+	ks = ks.filter((k) => !(REGION[k].parent && ks.includes(REGION[k].parent))); // a continent covers its subregions
+	return ks.sort((a, b) => RAIL_ORDER.indexOf(a) - RAIL_ORDER.indexOf(b)).join('+');
+}
+const validRegion = (v) => (typeof v === 'string' && v.split('+').every((k) => REGION[k]) ? normRegion(v.split('+')) : 'world');
+// The box to frame for an area or a combination of regions: the narrowest run of longitudes that holds
+// all of them (going either way round), or the whole world when that's most of the way round
+function areaBox(key) {
+	const boxes = regionKeys(key).map((k) => AREAS[k].box);
+	if (boxes.length === 1) return boxes[0];
+	if (boxes.some((b) => !b)) return null;
+	let best = null;
+	for (const [w0] of boxes) {
+		let e = w0;
+		for (const [w, , east] of boxes) e = Math.max(e, w0 + ((((w - w0) % 360) + 360) % 360) + (east - w));
+		if (!best || e - w0 < best[1] - best[0]) best = [w0, e];
+	}
+	if (best[1] - best[0] > 240) return null;
+	return [best[0], Math.min(...boxes.map((b) => b[1])), best[1], Math.max(...boxes.map((b) => b[3]))];
+}
 const ZOOM_KEYS = ['world', 'europe', 'asia', 'north-america', 'south-america', 'africa', 'oceania', 'caribbean', 'middle-east', 'pacific'];
 
 /* ---------------- state ---------------- */
@@ -118,7 +144,9 @@ const oneOf = (v, list, d) => (list.includes(v) ? v : d);
 const state = {
 	mode: oneOf(store.get('mode', 'study'), ['study', 'practice', 'test'], 'study'),
 	format: oneOf(store.get('format', 'click'), ['click', 'type'], 'click'),
-	region: oneOf(store.get('region', 'world'), Object.keys(REGION), 'world'),
+	region: validRegion(store.get('region', 'world')),
+	either: S.versions === true && store.get('flagVersions', 'main') === 'either', // World Flags: ask about either version of a flag
+	mix: store.get('mixRegions', false) === true, // the rail's Combine toggle: a click adds or removes a region
 	view: oneOf(store.get('view', 'globe'), ['globe', 'map'], 'globe'),
 	level: oneOf(store.get('level', 'easy'), ['easy', 'hard'], 'easy'),
 	clean: false,
@@ -142,14 +170,23 @@ if (location.hash === '#images') {
 let COUNTRIES = [];
 const BY_ID = new Map();
 const LOD = { xlow: null, low: null, mid: null, high: null }; // GeoJSON features at four levels of detail (same order)
+setFlagVersions(state.either);
 let META = []; // per feature: { i, id, country, name, of, c, r, area, box }
 
 const inRegion = (c, key) => key === 'world' || c.region === key || (SUB_IDS.has(key) && SUB_IDS.get(key).has(c.id));
-const inScope = (c) => inRegion(c, state.region);
+const inScope = (c) => regionKeys(state.region).some((k) => inRegion(c, k));
 const scopeCountries = () => COUNTRIES.filter(inScope);
 // a region's or zoom area's name, in the language in use (the English label where it has no translation)
 const regionName = (k) => (EN_REGION.has(k) ? t('region.' + k) : (AREAS[k] || REGION[k]).label);
-const regionLabel = (k = state.region) => regionName(k);
+function regionLabel(k = state.region) {
+	const names = regionKeys(k).map(regionName);
+	if (names.length === 1) return names[0];
+	try {
+		return new Intl.ListFormat(locale(), { style: 'long', type: 'conjunction' }).format(names);
+	} catch {
+		return names.join(', ');
+	}
+}
 
 /* ---------------- typed answers ---------------- */
 // checkAnswer(c, typed, { strict, keepSecret }), made when the countries have loaded (subjects.js)
@@ -329,7 +366,7 @@ function zoomAround(x, y, factor) {
 function frameArea(key, ms) {
 	state.zoomArea = key;
 	renderZoom();
-	flyTo(camForBox(AREAS[key].box), ms);
+	flyTo(camForBox(areaBox(key)), ms);
 }
 const frameRegion = (ms) => frameArea(state.region, ms);
 
@@ -1671,6 +1708,7 @@ function shuffle(a) {
 	return a;
 }
 function startSession(onlyIds) {
+	resetFlagPicks();
 	clearReview();
 	setCallout(null);
 	flashes = [];
@@ -1886,7 +1924,7 @@ function skip() {
 	renderStats();
 }
 function bestKey() {
-	return `${state.mode}|${state.format}|${state.level}|${state.region}`;
+	return `${state.mode}|${state.format}|${state.level}|${state.region}${state.either ? '|either' : ''}`;
 }
 function finishSession() {
 	session.end = performance.now();
@@ -2000,7 +2038,9 @@ function fitName() {
 }
 // The big line of the prompt. On World Flags a flag goes before the name, or stands alone when it's the question.
 let nameFlag = null; // the flag picture, kept so it doesn't reload on every redraw
-function setName(text, flag) {
+const otherImgs = new Map(); // the pictures of a flag's other versions, by file
+// others: the flag's other versions (state or civil flag, alternative flags...), shown smaller beside it
+function setName(text, flag, others = []) {
 	const el = $('pName');
 	el.classList.toggle('flag-only', !!flag && !text);
 	if (!flag) {
@@ -2011,7 +2051,20 @@ function setName(text, flag) {
 	else if (nameFlag.dataset.id !== flag) nameFlag.src = flagUrl(flag);
 	nameFlag.dataset.id = flag;
 	nameFlag.alt = text ? '' : t('flag_to_find');
-	el.replaceChildren(nameFlag, ...(text ? [document.createTextNode(text)] : []));
+	nameFlag.title = text ? flagLabel(flag) : '';
+	const imgs = [nameFlag];
+	for (const f of others) {
+		let img = otherImgs.get(f);
+		if (!img) {
+			img = flagImg(f);
+			img.classList.add('other');
+			img.title = flagLabel(f);
+			img.addEventListener('error', () => img.remove()); // a version not downloaded yet: leave it out
+			otherImgs.set(f, img);
+		}
+		imgs.push(img);
+	}
+	el.replaceChildren(...imgs, ...(text ? [document.createTextNode(text)] : []));
 }
 function setTip(text) {
 	const t = $('pTip');
@@ -2053,7 +2106,7 @@ function renderPromptText() {
 			return;
 		}
 		const c = study.items[study.index], st = S.study(c);
-		setName(st.name, st.flag);
+		setName(st.name, st.flag, st.flag2);
 		if (state.pins) {
 			const have = study.items.filter((x) => PINS.has(x.id)).length;
 			$('pMeta').textContent = `${study.index + 1} of ${study.items.length} · ${have} with images${narrow() ? '' : ` · ${PASTE_KEY} pastes onto this one`}`;
@@ -2083,7 +2136,7 @@ function renderPromptText() {
 	} else {
 		const q = (state.format === 'click' ? (session.phase === 'reveal' ? S.clickReveal : S.clickAsk) : session.phase === 'reveal' ? S.typeReveal : S.typeAsk)(cur);
 		$('pEyebrow').textContent = q.eyebrow;
-		setName(q.name, q.flag);
+		setName(q.name, q.flag, q.flag2);
 		if (q.tip) setTip(q.tip);
 	}
 	const answered = session.total - session.queue.length - (cur ? 1 : 0);
@@ -2111,14 +2164,23 @@ setInterval(() => {
 function renderRail() {
 	const title = document.createElement('div');
 	title.className = 'rail-title';
-	title.textContent = t('rail_title');
-	const kids = [title];
+	title.textContent = t(state.mix ? 'rail_title_mix' : 'rail_title');
+	const mix = document.createElement('button');
+	mix.type = 'button';
+	mix.className = 'mix';
+	mix.id = 'mixBtn';
+	mix.setAttribute('aria-pressed', String(state.mix));
+	mix.title = t('mix_title');
+	mix.textContent = t('mix');
+	const kids = [title, mix];
+	const chosen = regionKeys(state.region);
 	const button = (r, sub) => {
 		const b = document.createElement('button');
 		b.type = 'button';
 		b.dataset.region = r.key;
 		if (sub) b.className = 'sub';
-		b.setAttribute('aria-pressed', String(state.region === r.key));
+		b.setAttribute('aria-pressed', String(chosen.includes(r.key)));
+		if (!state.mix) b.title = t('mix_click');
 		const l = document.createElement('span');
 		l.textContent = regionName(r.key);
 		const n = document.createElement('em');
@@ -2127,22 +2189,37 @@ function renderRail() {
 		return b;
 	};
 	// the chosen continent (or the continent of the chosen subregion) lists its subregions under it
-	const open = REGION[state.region].parent || state.region;
+	const open = new Set(chosen.map((k) => REGION[k].parent || k));
 	for (const r of REGIONS) {
 		kids.push(button(r, false));
-		if (r.key === open) for (const s of SUBREGIONS) if (s.parent === r.key) kids.push(button(s, true));
+		if (open.has(r.key)) for (const s of SUBREGIONS) if (s.parent === r.key) kids.push(button(s, true));
 	}
 	$('rail').replaceChildren(...kids);
 	const rail = $('rail'), sel = rail.querySelector('[aria-pressed="true"]');
-	if (sel && rail.scrollWidth > rail.clientWidth) rail.scrollLeft = Math.max(0, sel.offsetLeft - 24);
+	// (only when it's out of sight, so the Combine toggle at the start stays in view when it can)
+	if (sel && rail.scrollWidth > rail.clientWidth && sel.offsetLeft + sel.offsetWidth > rail.clientWidth) rail.scrollLeft = Math.max(0, sel.offsetLeft - 24);
 }
 $('rail').addEventListener('click', (e) => {
+	if (e.target.closest('#mixBtn')) {
+		state.mix = !state.mix;
+		store.set('mixRegions', state.mix);
+		renderRail();
+		return;
+	}
 	const b = e.target.closest('button[data-region]');
 	if (!b) return;
 	const key = b.dataset.region;
-	guardTest(key === state.region ? t('restarting') : t('switching_to', { region: regionLabel(key) }), () => {
-		state.region = key;
-		store.set('region', key);
+	// Combine on, or Ctrl/Cmd/Shift-click: add the region to the ones chosen, or take it away
+	let next = key;
+	if (state.mix || e.ctrlKey || e.metaKey || e.shiftKey) {
+		const cur = state.region === 'world' ? [] : regionKeys(state.region);
+		next = cur.includes(key)
+			? normRegion(cur.filter((k) => k !== key))
+			: normRegion([...cur.filter((k) => k !== REGION[key].parent), key]); // a subregion narrows its continent
+	}
+	guardTest(next === state.region ? t('restarting') : t('switching_to', { region: regionLabel(next) }), () => {
+		state.region = next;
+		store.set('region', next);
 		renderRail();
 		frameRegion();
 		startSession();
@@ -2189,6 +2266,11 @@ function renderSegs() {
 	for (const b of $('levelSeg').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === state.level));
 	$('levelHint').textContent = LEVEL_HINT[state.format][state.level]();
 	$('levelBox').hidden = state.mode === 'study';
+	if ($('versionBox')) {
+		for (const b of $('versionSeg').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === (state.either ? 'either' : 'main')));
+		$('versionHint').textContent = t(state.either ? 'versions_either_hint' : 'versions_main_hint');
+		$('versionBox').hidden = state.mode === 'study';
+	}
 	$('searchBox').hidden = state.mode !== 'study';
 	renderDock();
 	$('keysHint').innerHTML = t('keys');
@@ -2286,6 +2368,18 @@ $('levelSeg').addEventListener('click', (e) => {
 	guardTest(t('changing_level'), () => {
 		state.level = b.dataset.v;
 		store.set('level', state.level);
+		renderSegs();
+		renderBest();
+		startSession();
+	});
+});
+$('versionSeg')?.addEventListener('click', (e) => {
+	const b = e.target.closest('button[data-v]');
+	if (!b || (b.dataset.v === 'either') === state.either) return;
+	guardTest(t('changing_level'), () => {
+		state.either = b.dataset.v === 'either';
+		store.set('flagVersions', b.dataset.v);
+		setFlagVersions(state.either);
 		renderSegs();
 		renderBest();
 		startSession();
@@ -2962,7 +3056,7 @@ async function boot() {
 	renderZoom();
 	renderSegs();
 	resize();
-	Object.assign(cam, camForBox(AREAS[state.region].box));
+	Object.assign(cam, camForBox(areaBox(state.region)));
 	state.zoomArea = state.region;
 	renderZoom();
 	updateProj();

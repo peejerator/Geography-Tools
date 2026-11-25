@@ -10,9 +10,10 @@ Learn the flag of every country, and where it is on the map.
 
 - The flags of 197 countries: the 193 UN members plus Vatican City, Palestine, Kosovo and Taiwan, each at its real shape (Switzerland and the Vatican square, Nepal's two pennants, Qatar's long 11:28)
 - A 3D globe or a flat map, and you can switch at any time, even mid-test
-- The whole world, one region (Europe, Asia, North America, South America, Africa or Oceania), or a subregion such as West Africa or Southeast Asia
+- The whole world, one region (Europe, Asia, North America, South America, Africa or Oceania), or a subregion such as West Africa or Southeast Asia, or several at once (Combine regions, or Ctrl/Cmd-click)
 - **Study**, **Practice** (misses come back until you get them right) and **Test** (every country once, timed, with your best score saved)
 - Two kinds of question: you get a flag and click its country, or you get a flag and type the country's name. The map never gives the answer away: the country shows only once you've answered
+- Flags with more than one official version (state and civil flags, optional and alternative versions, Bolivia's Wiphala, the back of Paraguay's) show them all in Study and once answered; the **Either version** setting asks about any of them at random
 - Look-alike flags get a short note once answered or studied: Chad and Romania, Indonesia and Monaco, Ireland and Côte d'Ivoire, Australia and New Zealand, the Slavic tricolours and more
 - Easy and Hard: in Hard, clicks only flash green or red and nothing stays coloured until the end, and typed answers get one try, spelled right
 - Rivers, lakes and the names of oceans and seas, off at the start; L or the Names button shows them
@@ -28,6 +29,7 @@ This tool is one folder of [Geography Tools](../README.md) and runs on World Cap
 | --- | --- |
 | `index.html` | The page: World Capitals' page with this tool's title, buttons and credits |
 | `flags/<id>.svg` | One flag per country, named by the country's id in [`../capital-atlas/data/countries.json`](../capital-atlas/data/countries.json) |
+| `flags/<id>-<version>.svg` | Other versions of a flag, from Wikimedia Commons (`scripts/fetch-flag-versions.mjs`; sources in `flags/VERSION-SOURCES.md`) |
 | `flags/LICENSES.md` | Where each flag comes from, and its licence |
 
 ## Licences and credits
