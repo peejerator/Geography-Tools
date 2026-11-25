@@ -63,7 +63,7 @@ export const EN = {
 	mode_practice: 'Practice',
 	mode_test: 'Test',
 	questions: 'Questions',
-	'capitals.fmt_click': 'Click the capital',
+	'capitals.fmt_click': 'Click the country',
 	'capitals.fmt_type': 'Type the capital',
 	'countries.fmt_click': 'Click the country',
 	'countries.fmt_type': 'Type the name',
