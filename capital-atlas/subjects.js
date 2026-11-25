@@ -149,19 +149,37 @@ export const FLAG_VERSIONS = {
 	URY: { main: 'State and civil flag', others: [['URY-artigas', 'Artigas flag (alternative state flag)'], ['URY-33', 'Flag of the Treinta y Tres (alternative state flag)']] },
 	VEN: { main: 'Civil flag', others: [['VEN-state', 'State flag']] },
 };
-// What the versions are, in a sentence: shown with the flag note. Countries not here get a sentence built from
-// the labels above (versionsLine)
+// What the versions are, in a sentence: shown with the flag note. A country added without one gets a sentence
+// built from the labels above (versionsLine)
 const VERSION_NOTES = {
+	AND: 'The optional civil flag leaves out the coat of arms; then it’s very like Chad’s and Romania’s.',
+	ARG: 'The optional civil flag leaves out the Sun of May.',
 	AUT: 'The state flag adds Austria’s coat of arms (a black eagle) in the middle.',
-	BOL: 'The coat of arms is on the state flag; the civil flag is plain. The Wiphala, a chequered flag, is a second national flag.',
+	BOL: 'The coat of arms is on the state flag; the civil flag is plain. The Wiphala, chequered in seven colours, is a second national flag.',
+	CRI: 'The civil flag has no coat of arms; then it’s Thailand’s with the red and blue swapped.',
 	DEU: 'The federal government’s flag adds the eagle on a shield, a little toward the pole.',
 	DNK: 'The state flag is swallow-tailed.',
+	DOM: 'The civil flag has no coat of arms in the middle of the white cross.',
+	ESP: 'The optional civil flag leaves out the coat of arms.',
+	FIN: 'The state flag adds the coat of arms where the arms of the cross meet.',
+	GTM: 'The civil flag has no coat of arms: just sky blue, white and sky blue.',
 	HTI: 'The civil flag has no white panel or coat of arms: just blue over red.',
+	HUN: 'The optional state flag adds the coat of arms in the middle.',
+	ISL: 'The state flag is swallow-tailed.',
+	ITA: 'At sea, the state flag adds a crowned shield with the arms of Venice, Genoa, Amalfi and Pisa.',
+	LIE: 'The state flag adds the prince’s coat of arms in the middle.',
+	MCO: 'The state flag is white, with the prince’s coat of arms.',
+	NGA: 'The state flag adds the coat of arms on the white stripe.',
+	NIC: 'The alternative state flag is a plain red and black flag.',
 	NOR: 'The state flag is swallow-tailed, with a tongue in the middle.',
 	PER: 'The coat of arms is on the state flag; the civil flag is plain red, white and red.',
 	POL: 'The state flag adds the coat of arms, a white eagle, on the white stripe.',
 	PRY: 'The only national flag with different sides: the national seal on the front, the treasury seal (a lion) on the back.',
+	SLV: 'The civil flag has no coat of arms; the alternative state flag has the motto “Dios Unión Libertad” in gold instead.',
+	SMR: 'The civil flag has no coat of arms: just white over light blue.',
 	SRB: 'The civil flag has no coat of arms; then it’s Russia’s colours upside down.',
+	TUV: 'The alternative state flag adds Tuvalu’s coat of arms, a shield, in the fly.',
+	URY: 'Two historical flags are also official state flags: Artigas’s, with a red diagonal band, and the Treinta y Tres’s, “Libertad o Muerte”.',
 	VEN: 'The state flag adds the coat of arms in the top corner by the pole.',
 };
 const otherVersions = (id) => FLAG_VERSIONS[id]?.others ?? [];
