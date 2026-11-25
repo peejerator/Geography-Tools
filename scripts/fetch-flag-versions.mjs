@@ -41,12 +41,16 @@ async function resolve(titles) {
 		titles: titles.map((t) => 'File:' + t).join('|'),
 	});
 	const pages = data.query?.pages ?? [];
-	// follow the API's renames (normalized, then redirects) so each asked-for title finds its page
-	const rename = new Map();
-	for (const n of [...(data.query?.normalized ?? []), ...(data.query?.redirects ?? [])]) rename.set(n.from, n.to);
+	// follow the API's renames so each asked-for title finds its page; a redirect isn't taken, because a
+	// title like "Flag of X (state).svg" can redirect to the main flag
+	const norm = new Map((data.query?.normalized ?? []).map((n) => [n.from, n.to]));
+	const redirect = new Map((data.query?.redirects ?? []).map((n) => [n.from, n.to]));
 	for (const t of titles) {
-		let name = 'File:' + t;
-		for (let i = 0; i < 3 && rename.has(name); i++) name = rename.get(name);
+		const name = norm.get('File:' + t) ?? 'File:' + t;
+		if (redirect.has(name)) {
+			console.log(`    (skipped "${t}": it redirects to "${redirect.get(name).replace(/^File:/, '')}")`);
+			continue;
+		}
 		const page = pages.find((p) => p.title === name);
 		const info = page && !page.missing && page.imageinfo?.[0];
 		if (!info) continue;
@@ -65,7 +69,7 @@ async function resolve(titles) {
 	return null;
 }
 async function search(q) {
-	const data = await api({ action: 'query', list: 'search', srnamespace: '6', srlimit: '8', srsearch: `${q} filetype:drawing` });
+	const data = await api({ action: 'query', list: 'search', srnamespace: '6', srlimit: '25', srsearch: `${q} filetype:drawing` });
 	return (data.query?.search ?? []).map((r) => r.title).filter((t) => /\.svg$/i.test(t));
 }
 
