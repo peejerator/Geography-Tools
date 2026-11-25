@@ -11,7 +11,7 @@
 export const EN = {
 	/* ---------- the page ---------- */
 	map_aria: 'Map of the world. Drag to move, scroll or pinch to zoom, click a country to select it.',
-	home_aria: 'SampleSize_1 home page',
+	home_aria: 'Home page',
 	'capitals.sub': 'Learn the capital of every country',
 	'countries.sub': 'Find every country on the map',
 	'flags.sub': 'Learn the flag of every country',
