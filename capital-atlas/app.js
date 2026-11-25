@@ -2037,7 +2037,7 @@ function fitName() {
 	if (el.scrollWidth > avail + 1) el.style.whiteSpace = 'normal';
 }
 // The big line of the prompt. On World Flags a flag goes before the name, or stands alone when it's the question.
-let nameFlag = null; // the flag picture, kept so it doesn't reload on every redraw
+let nameFlag = null, nameFlags = null; // the flag picture and the row it goes in, kept so they don't reload on every redraw
 const otherImgs = new Map(); // the pictures of a flag's other versions, by file
 // others: the flag's other versions (state or civil flag, alternative flags...), shown smaller beside it
 function setName(text, flag, others = []) {
@@ -2064,7 +2064,11 @@ function setName(text, flag, others = []) {
 		}
 		imgs.push(img);
 	}
-	el.replaceChildren(...imgs, ...(text ? [document.createTextNode(text)] : []));
+	if (!text) return el.replaceChildren(nameFlag);
+	// with a name: the flags in a row of their own above it, so they can be big
+	if (!nameFlags) nameFlags = Object.assign(document.createElement('span'), { className: 'flags' });
+	nameFlags.replaceChildren(...imgs);
+	el.replaceChildren(nameFlags, document.createTextNode(text));
 }
 function setTip(text) {
 	const t = $('pTip');
