@@ -1805,7 +1805,7 @@ function onMapClick(hit) {
 	if (!hit.id) return toastPlace(hit.i);
 	const c = BY_ID.get(hit.id);
 	if (!inScope(c)) {
-		toast(t('outside', { name: nameOf(c), region: regionLabel() }), 'bad');
+		toast(S.outside(c, regionLabel()), 'bad'); // the subject's own wording (World Capitals' names the capital)
 		return;
 	}
 	// Easy: a country already coloured green or red has been answered, so a click on it doesn't count
@@ -1885,7 +1885,7 @@ function gotIt(cur, note, close = false) {
 	flash(cur.id, close ? 'close' : 'ok');
 	pulsePrompt(close ? 'close' : 'ok');
 	if (note) toast(note, close ? 'close' : 'ok');
-	else if (quiet()) toast('Correct.', 'ok');
+	// clicking, it says which country it was (Hard too: only wrong clicks go unnamed there)
 	else if (state.format === 'click') toast(t('correct_that', { name: nameOf(cur) }), 'ok');
 	session.busy = true;
 	renderPrompt();
