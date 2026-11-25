@@ -114,6 +114,12 @@ body {
   border: 1px solid var(--line-strong); border-radius: var(--r);
   padding: 12px 18px; display: grid; gap: 4px; text-align: center; position: relative;
 }
+/* Study's previous / next arrows, at the card's sides */
+.pnav { position: absolute; top: 50%; left: 6px; transform: translateY(-50%); z-index: 1; display: grid; place-items: center; width: 34px; height: 44px;
+  padding: 0; border: 0; border-radius: 8px; background: none; color: var(--fg); opacity: 0.75; cursor: pointer; }
+.pnav.next { left: auto; right: 6px; }
+.pnav:hover, .pnav:focus-visible { opacity: 1; background: rgba(255, 255, 255, 0.06); }
+.prompt.has-nav { padding-inline: 44px; }
 .prompt::before {
   content: ""; position: absolute; top: 9px; left: 12px; width: 7px; height: 7px; border-radius: 50%;
   border: 1.5px solid var(--line-strong);
@@ -418,6 +424,9 @@ body.spinning .ui, body.spinning .callout, body.spinning #leader { opacity: 0; v
   </div>
 
   <div class="prompt" id="prompt" aria-live="polite">
+    <!-- Study: step to the previous / next country from the card itself -->
+    <button class="pnav" id="pPrev" type="button" aria-label="Previous" data-i18n-aria="prev" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="pnav next" id="pNext" type="button" aria-label="Next" data-i18n-aria="next" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     <div class="eyebrow" id="pEyebrow" data-i18n="loading">Loading</div>
     <div class="pname" id="pName" dir="auto" data-i18n="world_map">World map</div>
     <div class="pmeta" id="pMeta">&nbsp;</div>

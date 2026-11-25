@@ -436,6 +436,8 @@ function renderControls() {
 	}
 	$('modeHint').textContent = t('hint_' + state.mode);
 	$('formatHint').textContent = t(state.mode === 'study' ? 'format_in_study' : 'hint_' + state.format);
+	// Study asks nothing, so the question types (their name, buttons and explanation) are hidden
+	for (const el of [$('formatSeg').previousElementSibling, $('formatSeg'), $('formatHint')]) el.hidden = state.mode === 'study';
 	$('restartBtn').disabled = !state.open || state.mode === 'study';
 	$('namesBtn').disabled = !state.open || state.mode !== 'study';
 	$('namesBtn').setAttribute('aria-pressed', String(view.names()));

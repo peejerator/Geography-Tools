@@ -2275,6 +2275,7 @@ function renderSegs() {
 	for (const b of $('levelSeg').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === state.level));
 	$('levelHint').textContent = LEVEL_HINT[state.format][state.level]();
 	$('levelBox').hidden = state.mode === 'study';
+	$('formatSeg').closest('section').hidden = state.mode === 'study'; // Study asks nothing
 	if ($('versionBox')) {
 		for (const b of $('versionSeg').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === (state.either ? 'either' : 'main')));
 		$('versionHint').textContent = t(state.either ? 'versions_either_hint' : 'versions_main_hint');
@@ -2292,6 +2293,9 @@ const LEVEL_HINT = {
 function renderDock() {
 	const study = state.mode === 'study', nav = typeEasy() && !review;
 	$('prevBtn').hidden = !(study || nav);
+	// the arrows on the card itself, in Study
+	$('pPrev').hidden = $('pNext').hidden = !study;
+	$('prompt').classList.toggle('has-nav', study);
 	$('nextBtn').hidden = !(study || nav);
 	$('prevBtn').textContent = '← ' + (nav ? t('back') : t('prev'));
 	$('nextBtn').textContent = (nav ? t('skip') : t('next')) + ' →';
@@ -2372,6 +2376,8 @@ $('viewSeg').addEventListener('click', (e) => {
 });
 $('restartBtn').addEventListener('click', () => guardTest('Restarting', () => startSession()));
 $('prevBtn').addEventListener('click', () => (state.mode === 'study' ? studyStep(-1) : moveQuestion(-1)));
+$('pPrev').addEventListener('click', () => studyStep(-1));
+$('pNext').addEventListener('click', () => studyStep(1));
 $('nextBtn').addEventListener('click', () => (state.mode === 'study' ? studyStep(1) : moveQuestion(1)));
 $('skipBtn').addEventListener('click', skip);
 $('giveUpBtn').addEventListener('click', skip);
