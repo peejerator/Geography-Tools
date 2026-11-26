@@ -9,17 +9,22 @@ legal tender there (Bhutan's Indian rupee, Namibia's rand) show in the note, and
 with Preferences → Typed answers → Any legal tender.
 
 - **Study**: step through the countries, or click one, to see what it pays with ("Japan: Japanese Yen (¥)").
-- **Click the country**: you get a currency and click a country where it's the main one. Where several
-  countries share it (the euro, the CFA francs, the US dollar), any of them counts.
+- **Click the country** and **Type the country**: you get a currency and click or type a country that uses it.
+  A currency named after its own country is shown by its word alone ("Kina", "Dollar ($)"), as the full name
+  would give the answer away, and any country with its own currency of that word counts. One the country
+  shares and doesn't issue (Nauru's Australian dollar, Micronesia's US dollar, the euro, the CFA francs) is
+  shown in full, and you find each country that uses it.
 - **Type the currency**: a country lights up and you type its currency: the name with or without the
-  country's ("Yen", "Japanese Yen") or the code ("JPY").
-- **Type the country**: you get a currency and type a country where it's the main one.
+  country's ("Dollar", "Australian Dollar") or the code ("AUD").
+- **Pick the currency**: a country lights up and you pick its currency from four. For a country with its own
+  currency the choices are words (Dollar, Peso, Pound); for one that uses another's, they're of the same kind
+  (Nauru: Australian, US, New Zealand and Fijian dollars).
 
 ## Data
 
 | File | What |
 | --- | --- |
-| `data/currencies.json` | Each country's main currency and any others legal tender there (ISO 4217 codes), and each currency's English name, ISO name and symbol |
+| `data/currencies.json` | Each country's main currency and any others legal tender there (ISO 4217 codes), and each currency's English name, ISO name, symbol, word without the country (`short`) and the country it's the own currency of (`issuer`) |
 
 Built by `node scripts/build-currencies.mjs`, which downloads two sources and uses the currencies both list as
 current: ISO 4217 List One from SIX (the maintenance agency for ISO 4217; fund codes and units of account

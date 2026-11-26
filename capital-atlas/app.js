@@ -10,7 +10,7 @@
 import {
 	geoOrthographic, geoNaturalEarth1, geoPath, geoGraticule10, geoContains, geoBounds, geoCentroid, geoDistance, geoArea, feature,
 } from './geo.js';
-import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks, setCapitalsReverse, setAnyCurrency } from './subjects.js';
+import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks, setCapitalsReverse, setAnyCurrency, setPickCurrency } from './subjects.js';
 import { EN, t, useLanguage, lang, locale, nameOf, capitalOf, placeName, waterName } from './text.js';
 
 const $ = (id) => document.getElementById(id);
@@ -149,6 +149,8 @@ const state = {
 	any: S.anyCurrency === true && store.get('acceptCurrency', 'main') === 'any', // World Currencies: any legal tender counts when typed
 	// World Capitals' "Type the country": typing, with the capital given (format stays 'type')
 	reverse: S.reversible === true && store.get('reverse', false) === true,
+	// World Currencies' "Pick the currency": typing's question, answered from four choices (format stays 'type')
+	pick: S.pickable === true && store.get('pick', false) === true,
 	mix: store.get('mixRegions', false) === true, // the rail's Combine toggle: a click adds or removes a region
 	view: oneOf(store.get('view', 'globe'), ['globe', 'map'], 'globe'),
 	level: oneOf(store.get('level', 'easy'), ['easy', 'hard'], 'easy'),
@@ -176,6 +178,7 @@ const LOD = { xlow: null, low: null, mid: null, high: null }; // GeoJSON feature
 setFlagVersions(state.either);
 setCapitalsReverse(state.reverse && state.format === 'type');
 setAnyCurrency(state.any);
+setPickCurrency(state.pick && state.format === 'type');
 let META = []; // per feature: { i, id, country, name, of, c, r, area, box }
 
 const inRegion = (c, key) => key === 'world' || c.region === key || (SUB_IDS.has(key) && SUB_IDS.get(key).has(c.id));
@@ -1705,7 +1708,7 @@ function drawPins(ctx, p, selId) {
 /* ---------------- quiz (practice / test) ---------------- */
 let session = null, sessionSeq = 0, review = null;
 // the question type as the Questions buttons show it: 'click', 'type', or (World Capitals) 'rev', typing the country
-const fmtKey = () => (state.format === 'type' && state.reverse ? 'rev' : state.format);
+const fmtKey = () => (state.format === 'type' && state.reverse ? 'rev' : state.format === 'type' && state.pick ? 'pick' : state.format);
 const statKey = (id) => `${fmtKey()}:${id}`;
 function shuffle(a) {
 	for (let i = a.length - 1; i > 0; i--) {
@@ -1716,6 +1719,7 @@ function shuffle(a) {
 }
 function startSession(onlyIds) {
 	resetFlagPicks();
+	S.resetChoices?.();
 	clearReview();
 	setCallout(null);
 	flashes = [];
@@ -1934,6 +1938,7 @@ function missed(cur, answered) {
 	session.phase = 'reveal';
 	if (state.format === 'click') calloutFor(cur);
 	showCountry(cur, state.format === 'type');
+	if (state.format === 'type') renderChoices(); // Pick the currency: mark the right one
 	renderPrompt();
 	invalidate();
 }
@@ -2010,8 +2015,40 @@ $('rPractice').addEventListener('click', () => {
 });
 
 /* ---------------- typed answer box ---------------- */
+// "Pick the currency": the four choices, in place of the text box. A choice answers as if it had been typed.
+function renderChoices() {
+	const form = $('answerForm');
+	const opts = state.pick && session?.current ? S.choices?.(session.current, COUNTRIES) : null;
+	form.classList.toggle('picking', !!opts);
+	let box = $('choices');
+	if (!opts) return box && (box.hidden = true);
+	if (!box) {
+		box = Object.assign(document.createElement('div'), { id: 'choices', className: 'choices' });
+		box.setAttribute('role', 'group');
+		box.addEventListener('click', (e) => {
+			const b = e.target.closest('button');
+			if (!b || b.disabled) return;
+			const was = session?.current;
+			submitAnswer(b.textContent);
+			// Easy keeps asking after a wrong pick: that one can't be picked again
+			if (session?.current === was && session.phase === 'ask' && !session.busy) b.disabled = true;
+		});
+		form.appendChild(box);
+	}
+	box.hidden = false;
+	const right = S.answerChoice?.(session.current);
+	box.replaceChildren(
+		...opts.map((o) => {
+			const b = Object.assign(document.createElement('button'), { type: 'button', className: 'btn choice', textContent: o });
+			// once revealed, the right one is marked, and picking it goes on
+			if (session.phase === 'reveal' && o === right) b.classList.add('is-right');
+			return b;
+		}),
+	);
+}
 function openInput() {
 	$('answerForm').hidden = false;
+	renderChoices();
 	$('answer').classList.remove('is-bad');
 	$('answer').placeholder = session && session.phase === 'reveal' ? t('type_x', { answer: S.answer(session.current) }) : S.placeholder();
 	syncMore();
@@ -2362,10 +2399,13 @@ function setMode(m, restart = true) {
 }
 function setFormat(f) {
 	state.reverse = f === 'rev';
-	state.format = f === 'rev' ? 'type' : f;
+	state.pick = f === 'pick';
+	state.format = f === 'rev' || f === 'pick' ? 'type' : f;
 	store.set('format', state.format);
 	store.set('reverse', state.reverse);
+	store.set('pick', state.pick);
 	setCapitalsReverse(state.reverse);
+	setPickCurrency(state.pick);
 	if (COUNTRIES.length) checkAnswer = makeChecker(S, COUNTRIES); // the answers changed
 	renderSegs();
 	renderBest();

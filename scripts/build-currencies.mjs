@@ -73,6 +73,12 @@ const ISO_NAMES = {
 	'MYANMAR': 'MMR',
 	'PALESTINE, STATE OF': null, // "No universal currency": see NOT_IN_ISO
 };
+// A currency's own word, without its country's (asked as "Kina", not "Papua New Guinean Kina"): the last word of
+// its English name, except these
+const SHORT = { BAM: 'Convertible Mark' };
+// The country whose own currency a shared one is (Nauru uses Australia's dollar); the euro, the CFA francs and the
+// East Caribbean dollar belong to no one country
+const ISSUER = { AUD: 'AUS', USD: 'USA', CHF: 'CHE', ILS: 'ISR' };
 // units of account the list doesn't mark as funds, but nobody pays with
 const NOT_MONEY = new Set(['UYW']); // Uruguay's Unidad Previsional, an index for pensions
 // countries ISO 4217 has no entry for, with the currency they use
@@ -168,8 +174,14 @@ if (missing.length) {
 }
 
 const codes = [...new Set(Object.values(result).flatMap((r) => [r.main, ...r.also]))].sort();
+const users = (code) => list.filter((c) => result[c.id].main === code).map((c) => c.id);
 const currencies = Object.fromEntries(
-	codes.map((code) => [code, { name: en.of(code), iso: isoNames[code] ?? en.of(code), symbol: symbolOf(code) }]),
+	codes.map((code) => {
+		const name = en.of(code), u = users(code);
+		// issuer: the country it's that country's own currency of (one user, or ISSUER); null for shared ones
+		const issuer = u.length === 1 ? u[0] : (ISSUER[code] ?? null);
+		return [code, { name, iso: isoNames[code] ?? name, symbol: symbolOf(code), short: SHORT[code] ?? name.split(/\s+/).pop(), issuer }];
+	}),
 );
 const data = {
 	about: `Each country's main currency and any others also legal tender: ISO 4217 List One published ${published} (SIX, for ISO; funds left out) and CLDR currency data (${cldrVersion}); English names and symbols from the Unicode CLDR (Node ${process.versions.node}, CLDR ${process.versions.cldr}). Built by scripts/build-currencies.mjs.`,

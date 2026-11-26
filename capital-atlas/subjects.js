@@ -381,8 +381,72 @@ const formsOf = (code) => {
 	return [local, name, iso, code, ...tails(local), ...tails(name), ...tails(iso), ...(ALT_NAMES[code] || [])];
 };
 const currencyForms = (c) => [mainOf(c), ...(anyCurrency ? alsoOf(c) : [])].filter(Boolean).flatMap(formsOf);
-// countries whose main currency is the same are the same answer (France and Germany, the euro)
-const sameCurrencies = (a, b) => !!mainOf(a) && mainOf(a) === mainOf(b);
+// A country's "own" currency is one named after it (Japan's yen, Australia's dollar). Asked from the currency
+// (Click the country, Type the country), an own currency is shown without the country's part, as its word
+// ("Dollar ($)"), and any country with its own currency of that word counts: there's nothing more to learn
+// from "Jamaican". A currency the country shares and doesn't issue (Nauru's Australian dollar, the euro, the
+// CFA francs) is shown in full, and any country using it counts: that's what there is to learn.
+const isOwn = (c) => CUR?.currencies[mainOf(c)]?.issuer === c.id;
+const shortOf = (code) => CUR.currencies[code].short;
+// the symbol beside a word, only if every own currency of that word has it ("Dollar ($)", but just "Pound")
+const wordSymbol = (code) => {
+	const syms = new Set(Object.values(CUR.currencies).filter((x) => x.short === shortOf(code) && x.issuer).map((x) => x.symbol));
+	return syms.size === 1 ? symbolOf(code) : null;
+};
+const askLabel = (c) => {
+	if (!mainOf(c)) return '';
+	if (!isOwn(c)) return currencyLabel(c);
+	const code = mainOf(c), sym = wordSymbol(code);
+	return shortOf(code) + (sym ? ` (${sym})` : '');
+};
+// the same answer: the same main currency (France and Germany, the euro; Nauru and Australia, the Australian
+// dollar), or, asked by its word, both with an own currency of that word (Jamaica and Canada, a dollar)
+const sameCurrencies = (a, b) =>
+	!!mainOf(a) && (mainOf(a) === mainOf(b) || (isOwn(a) && isOwn(b) && shortOf(mainOf(a)) === shortOf(mainOf(b))));
+
+// "Pick the currency": four to choose from. For a country with its own currency, four different words (Dollar,
+// Peso, Pound, Gourde), as the full names would give it away; for one that uses another's, four full names of
+// the same kind (Nauru: Australian, US, New Zealand and Fijian dollars). Wrong ones come from the same word,
+// then the region, then anywhere; never one that's legal tender there. Kept per question for the session.
+let picking = false;
+export function setPickCurrency(on) {
+	picking = !!on;
+	choiceCache.clear();
+}
+const choiceCache = new Map();
+export const resetChoices = () => choiceCache.clear();
+function shuffle(a) {
+	for (let i = a.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[a[i], a[j]] = [a[j], a[i]];
+	}
+	return a;
+}
+function choicesFor(c, list) {
+	if (choiceCache.has(c.id)) return choiceCache.get(c.id);
+	const main = mainOf(c), own = isOwn(c), legal = new Set([main, ...alsoOf(c)]);
+	const label = (code) => (own ? shortOf(code) : withSymbol(code));
+	const out = [label(main)];
+	const add = (code) => {
+		if (out.length >= 4 || legal.has(code)) return;
+		const l = label(code);
+		if (!out.includes(l)) out.push(l);
+	};
+	const all = Object.keys(CUR.currencies);
+	const near = (cc) => list.filter((o) => o.region === c.region && o !== c).map(mainOf);
+	const nearby = new Set(near().filter(Boolean));
+	// the same kind first (from the region before anywhere else), then the region's currencies
+	if (!own) {
+		const kind = all.filter((x) => shortOf(x) === shortOf(main));
+		shuffle(kind.filter((x) => nearby.has(x))).forEach(add);
+		shuffle(kind).forEach(add);
+	}
+	shuffle([...nearby]).forEach(add);
+	shuffle(all).forEach(add);
+	const res = shuffle(out);
+	choiceCache.set(c.id, res);
+	return res;
+}
 const currencies = {
 	key: 'currencies',
 	tool: 'currency-atlas',
@@ -401,9 +465,13 @@ const currencies = {
 	tell: rev((c) => t('currencies.tell', { name: nameOf(c), currency: currencyLabel(c) }), (c) => t('currencies.tell_country', { name: nameOf(c), currency: currencyLabel(c) })),
 	fact: (c) => t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }),
 	outside: (c, region) => t('currencies.outside', { name: nameOf(c), currency: currencyLabel(c), region }),
-	missClick: (c) => t('capitals.miss_click', { name: nameOf(c) }),
-	// another country that pays with the same: right too (the euro asked, Germany clicked for France)
+	// another country with the same answer: right too (the euro asked, Germany clicked for France)
 	sameAnswer: (asked, other) => sameCurrencies(asked, other),
+	// a wrong click: what that country uses (Micronesia for "Dollar ($)": the US dollar, not its own)
+	missClick: (c, clicked) => t('currencies.miss_click', { clicked: nameOf(clicked), currency: currencyLabel(clicked) }),
+	choices: (c, list) => (picking ? choicesFor(c, list) : null),
+	answerChoice: (c) => (isOwn(c) ? shortOf(mainOf(c)) : withSymbol(mainOf(c))), // the right one of them
+	resetChoices,
 	callout: (c) => ({ title: currencyLabel(c), sub: nameOf(c) }),
 	label: (c) => currencyLabel(c),
 	searchSub: (c) => mainOf(c) ?? '', // beside a country in Find a country: its main currency's code
@@ -418,15 +486,19 @@ const currencies = {
 	},
 	placeholder: rev(() => t('currencies.placeholder'), () => t('countries.placeholder')),
 	study: (c) => ({ name: t('capitals.pair', { name: nameOf(c), capital: currencyLabel(c) }), tip: alsoNote(c) }),
-	clickAsk: (c) => ({ eyebrow: t('currencies.click_ask'), name: currencyLabel(c) }),
+	clickAsk: (c) => ({ eyebrow: t(isOwn(c) ? 'currencies.click_ask_own' : 'currencies.click_ask'), name: askLabel(c) }),
 	clickReveal: (c) => ({ eyebrow: t('here_it_is'), name: currencyLabel(c), tip: join(t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }), alsoNote(c)) }),
-	typeAsk: rev((c) => ({ eyebrow: t('currencies.type_ask'), name: nameOf(c) }), (c) => ({ eyebrow: t('currencies.rev_type_ask'), name: currencyLabel(c) })),
+	typeAsk: rev(
+		(c) => ({ eyebrow: t(picking ? 'currencies.pick_ask' : 'currencies.type_ask'), name: nameOf(c) }),
+		(c) => ({ eyebrow: t(isOwn(c) ? 'currencies.rev_type_ask_own' : 'currencies.rev_type_ask'), name: askLabel(c) }),
+	),
 	typeReveal: rev(
 		(c) => ({ eyebrow: t('currencies.type_reveal', { name: nameOf(c) }), name: currencyLabel(c), tip: join(t('type_it'), alsoNote(c)) }),
 		(c) => ({ eyebrow: t('currencies.rev_type_reveal'), name: nameOf(c), tip: join(t('type_it'), alsoNote(c)) }),
 	),
-	hint: (k) => t('currencies.' + (reverse && k.startsWith('type') ? 'rev_' : '') + k + '_hint'),
+	hint: (k) => t('currencies.' + (k.startsWith('type') ? (reverse ? 'rev_' : picking ? 'pick_' : '') : '') + k + '_hint'),
 	reversible: true,
+	pickable: true, // has "Pick the currency" (setPickCurrency)
 	anyCurrency: true, // has the "Accept" setting (setAnyCurrency)
 };
 
