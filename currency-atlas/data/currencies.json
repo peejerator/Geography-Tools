@@ -1,607 +1,809 @@
 {
-	"about": "Currencies by country: ISO 4217 List One published 2024-06-25 (SIX, for ISO), funds left out; English names and symbols from the Unicode CLDR (Node 22.23.5, CLDR 48.0). Built by scripts/build-currencies.mjs.",
+	"about": "Each country's main currency and any others also legal tender: ISO 4217 List One published 2024-06-25 (SIX, for ISO; funds left out) and CLDR currency data (49.0.0); English names and symbols from the Unicode CLDR (Node 22.23.5, CLDR 48.0). Built by scripts/build-currencies.mjs.",
 	"published": "2024-06-25",
 	"countries": {
-		"ALB": [
-			"ALL"
-		],
-		"AND": [
-			"EUR"
-		],
-		"AUT": [
-			"EUR"
-		],
-		"BLR": [
-			"BYN"
-		],
-		"BEL": [
-			"EUR"
-		],
-		"BIH": [
-			"BAM"
-		],
-		"BGR": [
-			"BGN"
-		],
-		"HRV": [
-			"EUR"
-		],
-		"CYP": [
-			"EUR"
-		],
-		"CZE": [
-			"CZK"
-		],
-		"DNK": [
-			"DKK"
-		],
-		"EST": [
-			"EUR"
-		],
-		"FIN": [
-			"EUR"
-		],
-		"FRA": [
-			"EUR"
-		],
-		"DEU": [
-			"EUR"
-		],
-		"GRC": [
-			"EUR"
-		],
-		"HUN": [
-			"HUF"
-		],
-		"ISL": [
-			"ISK"
-		],
-		"IRL": [
-			"EUR"
-		],
-		"ITA": [
-			"EUR"
-		],
-		"KOS": [
-			"EUR"
-		],
-		"LVA": [
-			"EUR"
-		],
-		"LIE": [
-			"CHF"
-		],
-		"LTU": [
-			"EUR"
-		],
-		"LUX": [
-			"EUR"
-		],
-		"MLT": [
-			"EUR"
-		],
-		"MDA": [
-			"MDL"
-		],
-		"MCO": [
-			"EUR"
-		],
-		"MNE": [
-			"EUR"
-		],
-		"NLD": [
-			"EUR"
-		],
-		"MKD": [
-			"MKD"
-		],
-		"NOR": [
-			"NOK"
-		],
-		"POL": [
-			"PLN"
-		],
-		"PRT": [
-			"EUR"
-		],
-		"ROU": [
-			"RON"
-		],
-		"RUS": [
-			"RUB"
-		],
-		"SMR": [
-			"EUR"
-		],
-		"SRB": [
-			"RSD"
-		],
-		"SVK": [
-			"EUR"
-		],
-		"SVN": [
-			"EUR"
-		],
-		"ESP": [
-			"EUR"
-		],
-		"SWE": [
-			"SEK"
-		],
-		"CHE": [
-			"CHF"
-		],
-		"UKR": [
-			"UAH"
-		],
-		"GBR": [
-			"GBP"
-		],
-		"VAT": [
-			"EUR"
-		],
-		"AFG": [
-			"AFN"
-		],
-		"ARM": [
-			"AMD"
-		],
-		"AZE": [
-			"AZN"
-		],
-		"BHR": [
-			"BHD"
-		],
-		"BGD": [
-			"BDT"
-		],
-		"BTN": [
-			"BTN",
-			"INR"
-		],
-		"BRN": [
-			"BND"
-		],
-		"KHM": [
-			"KHR"
-		],
-		"CHN": [
-			"CNY"
-		],
-		"GEO": [
-			"GEL"
-		],
-		"IND": [
-			"INR"
-		],
-		"IDN": [
-			"IDR"
-		],
-		"IRN": [
-			"IRR"
-		],
-		"IRQ": [
-			"IQD"
-		],
-		"ISR": [
-			"ILS"
-		],
-		"JPN": [
-			"JPY"
-		],
-		"JOR": [
-			"JOD"
-		],
-		"KAZ": [
-			"KZT"
-		],
-		"KWT": [
-			"KWD"
-		],
-		"KGZ": [
-			"KGS"
-		],
-		"LAO": [
-			"LAK"
-		],
-		"LBN": [
-			"LBP"
-		],
-		"MYS": [
-			"MYR"
-		],
-		"MDV": [
-			"MVR"
-		],
-		"MNG": [
-			"MNT"
-		],
-		"MMR": [
-			"MMK"
-		],
-		"NPL": [
-			"NPR"
-		],
-		"PRK": [
-			"KPW"
-		],
-		"OMN": [
-			"OMR"
-		],
-		"PAK": [
-			"PKR"
-		],
-		"PSX": [
-			"ILS",
-			"JOD"
-		],
-		"PHL": [
-			"PHP"
-		],
-		"QAT": [
-			"QAR"
-		],
-		"SAU": [
-			"SAR"
-		],
-		"SGP": [
-			"SGD"
-		],
-		"KOR": [
-			"KRW"
-		],
-		"LKA": [
-			"LKR"
-		],
-		"SYR": [
-			"SYP"
-		],
-		"TWN": [
-			"TWD"
-		],
-		"TJK": [
-			"TJS"
-		],
-		"THA": [
-			"THB"
-		],
-		"TLS": [
-			"USD"
-		],
-		"TUR": [
-			"TRY"
-		],
-		"TKM": [
-			"TMT"
-		],
-		"ARE": [
-			"AED"
-		],
-		"UZB": [
-			"UZS"
-		],
-		"VNM": [
-			"VND"
-		],
-		"YEM": [
-			"YER"
-		],
-		"DZA": [
-			"DZD"
-		],
-		"AGO": [
-			"AOA"
-		],
-		"BEN": [
-			"XOF"
-		],
-		"BWA": [
-			"BWP"
-		],
-		"BFA": [
-			"XOF"
-		],
-		"BDI": [
-			"BIF"
-		],
-		"CPV": [
-			"CVE"
-		],
-		"CMR": [
-			"XAF"
-		],
-		"CAF": [
-			"XAF"
-		],
-		"TCD": [
-			"XAF"
-		],
-		"COM": [
-			"KMF"
-		],
-		"COD": [
-			"CDF"
-		],
-		"COG": [
-			"XAF"
-		],
-		"CIV": [
-			"XOF"
-		],
-		"DJI": [
-			"DJF"
-		],
-		"EGY": [
-			"EGP"
-		],
-		"GNQ": [
-			"XAF"
-		],
-		"ERI": [
-			"ERN"
-		],
-		"SWZ": [
-			"SZL"
-		],
-		"ETH": [
-			"ETB"
-		],
-		"GAB": [
-			"XAF"
-		],
-		"GMB": [
-			"GMD"
-		],
-		"GHA": [
-			"GHS"
-		],
-		"GIN": [
-			"GNF"
-		],
-		"GNB": [
-			"XOF"
-		],
-		"KEN": [
-			"KES"
-		],
-		"LSO": [
-			"LSL",
-			"ZAR"
-		],
-		"LBR": [
-			"LRD"
-		],
-		"LBY": [
-			"LYD"
-		],
-		"MDG": [
-			"MGA"
-		],
-		"MWI": [
-			"MWK"
-		],
-		"MLI": [
-			"XOF"
-		],
-		"MRT": [
-			"MRU"
-		],
-		"MUS": [
-			"MUR"
-		],
-		"MAR": [
-			"MAD"
-		],
-		"MOZ": [
-			"MZN"
-		],
-		"NAM": [
-			"NAD",
-			"ZAR"
-		],
-		"NER": [
-			"XOF"
-		],
-		"NGA": [
-			"NGN"
-		],
-		"RWA": [
-			"RWF"
-		],
-		"STP": [
-			"STN"
-		],
-		"SEN": [
-			"XOF"
-		],
-		"SYC": [
-			"SCR"
-		],
-		"SLE": [
-			"SLE"
-		],
-		"SOM": [
-			"SOS"
-		],
-		"ZAF": [
-			"ZAR"
-		],
-		"SDS": [
-			"SSP"
-		],
-		"SDN": [
-			"SDG"
-		],
-		"TZA": [
-			"TZS"
-		],
-		"TGO": [
-			"XOF"
-		],
-		"TUN": [
-			"TND"
-		],
-		"UGA": [
-			"UGX"
-		],
-		"ZMB": [
-			"ZMW"
-		],
-		"ZWE": [
-			"ZWG"
-		],
-		"ATG": [
-			"XCD"
-		],
-		"BHS": [
-			"BSD"
-		],
-		"BRB": [
-			"BBD"
-		],
-		"BLZ": [
-			"BZD"
-		],
-		"CAN": [
-			"CAD"
-		],
-		"CRI": [
-			"CRC"
-		],
-		"CUB": [
-			"CUP",
-			"CUC"
-		],
-		"DMA": [
-			"XCD"
-		],
-		"DOM": [
-			"DOP"
-		],
-		"SLV": [
-			"SVC",
-			"USD"
-		],
-		"GRD": [
-			"XCD"
-		],
-		"GTM": [
-			"GTQ"
-		],
-		"HTI": [
-			"HTG",
-			"USD"
-		],
-		"HND": [
-			"HNL"
-		],
-		"JAM": [
-			"JMD"
-		],
-		"MEX": [
-			"MXN"
-		],
-		"NIC": [
-			"NIO"
-		],
-		"PAN": [
-			"PAB",
-			"USD"
-		],
-		"KNA": [
-			"XCD"
-		],
-		"LCA": [
-			"XCD"
-		],
-		"VCT": [
-			"XCD"
-		],
-		"TTO": [
-			"TTD"
-		],
-		"USA": [
-			"USD"
-		],
-		"ARG": [
-			"ARS"
-		],
-		"BOL": [
-			"BOB"
-		],
-		"BRA": [
-			"BRL"
-		],
-		"CHL": [
-			"CLP"
-		],
-		"COL": [
-			"COP"
-		],
-		"ECU": [
-			"USD"
-		],
-		"GUY": [
-			"GYD"
-		],
-		"PRY": [
-			"PYG"
-		],
-		"PER": [
-			"PEN"
-		],
-		"SUR": [
-			"SRD"
-		],
-		"URY": [
-			"UYU"
-		],
-		"VEN": [
-			"VES",
-			"VED"
-		],
-		"AUS": [
-			"AUD"
-		],
-		"FJI": [
-			"FJD"
-		],
-		"KIR": [
-			"AUD"
-		],
-		"MHL": [
-			"USD"
-		],
-		"FSM": [
-			"USD"
-		],
-		"NRU": [
-			"AUD"
-		],
-		"NZL": [
-			"NZD"
-		],
-		"PLW": [
-			"USD"
-		],
-		"PNG": [
-			"PGK"
-		],
-		"WSM": [
-			"WST"
-		],
-		"SLB": [
-			"SBD"
-		],
-		"TON": [
-			"TOP"
-		],
-		"TUV": [
-			"AUD"
-		],
-		"VUT": [
-			"VUV"
-		]
+		"ALB": {
+			"main": "ALL",
+			"also": []
+		},
+		"AND": {
+			"main": "EUR",
+			"also": []
+		},
+		"AUT": {
+			"main": "EUR",
+			"also": []
+		},
+		"BLR": {
+			"main": "BYN",
+			"also": []
+		},
+		"BEL": {
+			"main": "EUR",
+			"also": []
+		},
+		"BIH": {
+			"main": "BAM",
+			"also": []
+		},
+		"BGR": {
+			"main": "EUR",
+			"also": []
+		},
+		"HRV": {
+			"main": "EUR",
+			"also": []
+		},
+		"CYP": {
+			"main": "EUR",
+			"also": []
+		},
+		"CZE": {
+			"main": "CZK",
+			"also": []
+		},
+		"DNK": {
+			"main": "DKK",
+			"also": []
+		},
+		"EST": {
+			"main": "EUR",
+			"also": []
+		},
+		"FIN": {
+			"main": "EUR",
+			"also": []
+		},
+		"FRA": {
+			"main": "EUR",
+			"also": []
+		},
+		"DEU": {
+			"main": "EUR",
+			"also": []
+		},
+		"GRC": {
+			"main": "EUR",
+			"also": []
+		},
+		"HUN": {
+			"main": "HUF",
+			"also": []
+		},
+		"ISL": {
+			"main": "ISK",
+			"also": []
+		},
+		"IRL": {
+			"main": "EUR",
+			"also": []
+		},
+		"ITA": {
+			"main": "EUR",
+			"also": []
+		},
+		"KOS": {
+			"main": "EUR",
+			"also": []
+		},
+		"LVA": {
+			"main": "EUR",
+			"also": []
+		},
+		"LIE": {
+			"main": "CHF",
+			"also": []
+		},
+		"LTU": {
+			"main": "EUR",
+			"also": []
+		},
+		"LUX": {
+			"main": "EUR",
+			"also": []
+		},
+		"MLT": {
+			"main": "EUR",
+			"also": []
+		},
+		"MDA": {
+			"main": "MDL",
+			"also": []
+		},
+		"MCO": {
+			"main": "EUR",
+			"also": []
+		},
+		"MNE": {
+			"main": "EUR",
+			"also": []
+		},
+		"NLD": {
+			"main": "EUR",
+			"also": []
+		},
+		"MKD": {
+			"main": "MKD",
+			"also": []
+		},
+		"NOR": {
+			"main": "NOK",
+			"also": []
+		},
+		"POL": {
+			"main": "PLN",
+			"also": []
+		},
+		"PRT": {
+			"main": "EUR",
+			"also": []
+		},
+		"ROU": {
+			"main": "RON",
+			"also": []
+		},
+		"RUS": {
+			"main": "RUB",
+			"also": []
+		},
+		"SMR": {
+			"main": "EUR",
+			"also": []
+		},
+		"SRB": {
+			"main": "RSD",
+			"also": []
+		},
+		"SVK": {
+			"main": "EUR",
+			"also": []
+		},
+		"SVN": {
+			"main": "EUR",
+			"also": []
+		},
+		"ESP": {
+			"main": "EUR",
+			"also": []
+		},
+		"SWE": {
+			"main": "SEK",
+			"also": []
+		},
+		"CHE": {
+			"main": "CHF",
+			"also": []
+		},
+		"UKR": {
+			"main": "UAH",
+			"also": []
+		},
+		"GBR": {
+			"main": "GBP",
+			"also": []
+		},
+		"VAT": {
+			"main": "EUR",
+			"also": []
+		},
+		"AFG": {
+			"main": "AFN",
+			"also": []
+		},
+		"ARM": {
+			"main": "AMD",
+			"also": []
+		},
+		"AZE": {
+			"main": "AZN",
+			"also": []
+		},
+		"BHR": {
+			"main": "BHD",
+			"also": []
+		},
+		"BGD": {
+			"main": "BDT",
+			"also": []
+		},
+		"BTN": {
+			"main": "BTN",
+			"also": [
+				"INR"
+			]
+		},
+		"BRN": {
+			"main": "BND",
+			"also": []
+		},
+		"KHM": {
+			"main": "KHR",
+			"also": []
+		},
+		"CHN": {
+			"main": "CNY",
+			"also": []
+		},
+		"GEO": {
+			"main": "GEL",
+			"also": []
+		},
+		"IND": {
+			"main": "INR",
+			"also": []
+		},
+		"IDN": {
+			"main": "IDR",
+			"also": []
+		},
+		"IRN": {
+			"main": "IRR",
+			"also": []
+		},
+		"IRQ": {
+			"main": "IQD",
+			"also": []
+		},
+		"ISR": {
+			"main": "ILS",
+			"also": []
+		},
+		"JPN": {
+			"main": "JPY",
+			"also": []
+		},
+		"JOR": {
+			"main": "JOD",
+			"also": []
+		},
+		"KAZ": {
+			"main": "KZT",
+			"also": []
+		},
+		"KWT": {
+			"main": "KWD",
+			"also": []
+		},
+		"KGZ": {
+			"main": "KGS",
+			"also": []
+		},
+		"LAO": {
+			"main": "LAK",
+			"also": []
+		},
+		"LBN": {
+			"main": "LBP",
+			"also": []
+		},
+		"MYS": {
+			"main": "MYR",
+			"also": []
+		},
+		"MDV": {
+			"main": "MVR",
+			"also": []
+		},
+		"MNG": {
+			"main": "MNT",
+			"also": []
+		},
+		"MMR": {
+			"main": "MMK",
+			"also": []
+		},
+		"NPL": {
+			"main": "NPR",
+			"also": []
+		},
+		"PRK": {
+			"main": "KPW",
+			"also": []
+		},
+		"OMN": {
+			"main": "OMR",
+			"also": []
+		},
+		"PAK": {
+			"main": "PKR",
+			"also": []
+		},
+		"PSX": {
+			"main": "ILS",
+			"also": [
+				"JOD"
+			]
+		},
+		"PHL": {
+			"main": "PHP",
+			"also": []
+		},
+		"QAT": {
+			"main": "QAR",
+			"also": []
+		},
+		"SAU": {
+			"main": "SAR",
+			"also": []
+		},
+		"SGP": {
+			"main": "SGD",
+			"also": []
+		},
+		"KOR": {
+			"main": "KRW",
+			"also": []
+		},
+		"LKA": {
+			"main": "LKR",
+			"also": []
+		},
+		"SYR": {
+			"main": "SYP",
+			"also": []
+		},
+		"TWN": {
+			"main": "TWD",
+			"also": []
+		},
+		"TJK": {
+			"main": "TJS",
+			"also": []
+		},
+		"THA": {
+			"main": "THB",
+			"also": []
+		},
+		"TLS": {
+			"main": "USD",
+			"also": []
+		},
+		"TUR": {
+			"main": "TRY",
+			"also": []
+		},
+		"TKM": {
+			"main": "TMT",
+			"also": []
+		},
+		"ARE": {
+			"main": "AED",
+			"also": []
+		},
+		"UZB": {
+			"main": "UZS",
+			"also": []
+		},
+		"VNM": {
+			"main": "VND",
+			"also": []
+		},
+		"YEM": {
+			"main": "YER",
+			"also": []
+		},
+		"DZA": {
+			"main": "DZD",
+			"also": []
+		},
+		"AGO": {
+			"main": "AOA",
+			"also": []
+		},
+		"BEN": {
+			"main": "XOF",
+			"also": []
+		},
+		"BWA": {
+			"main": "BWP",
+			"also": []
+		},
+		"BFA": {
+			"main": "XOF",
+			"also": []
+		},
+		"BDI": {
+			"main": "BIF",
+			"also": []
+		},
+		"CPV": {
+			"main": "CVE",
+			"also": []
+		},
+		"CMR": {
+			"main": "XAF",
+			"also": []
+		},
+		"CAF": {
+			"main": "XAF",
+			"also": []
+		},
+		"TCD": {
+			"main": "XAF",
+			"also": []
+		},
+		"COM": {
+			"main": "KMF",
+			"also": []
+		},
+		"COD": {
+			"main": "CDF",
+			"also": []
+		},
+		"COG": {
+			"main": "XAF",
+			"also": []
+		},
+		"CIV": {
+			"main": "XOF",
+			"also": []
+		},
+		"DJI": {
+			"main": "DJF",
+			"also": []
+		},
+		"EGY": {
+			"main": "EGP",
+			"also": []
+		},
+		"GNQ": {
+			"main": "XAF",
+			"also": []
+		},
+		"ERI": {
+			"main": "ERN",
+			"also": []
+		},
+		"SWZ": {
+			"main": "SZL",
+			"also": []
+		},
+		"ETH": {
+			"main": "ETB",
+			"also": []
+		},
+		"GAB": {
+			"main": "XAF",
+			"also": []
+		},
+		"GMB": {
+			"main": "GMD",
+			"also": []
+		},
+		"GHA": {
+			"main": "GHS",
+			"also": []
+		},
+		"GIN": {
+			"main": "GNF",
+			"also": []
+		},
+		"GNB": {
+			"main": "XOF",
+			"also": []
+		},
+		"KEN": {
+			"main": "KES",
+			"also": []
+		},
+		"LSO": {
+			"main": "LSL",
+			"also": [
+				"ZAR"
+			]
+		},
+		"LBR": {
+			"main": "LRD",
+			"also": []
+		},
+		"LBY": {
+			"main": "LYD",
+			"also": []
+		},
+		"MDG": {
+			"main": "MGA",
+			"also": []
+		},
+		"MWI": {
+			"main": "MWK",
+			"also": []
+		},
+		"MLI": {
+			"main": "XOF",
+			"also": []
+		},
+		"MRT": {
+			"main": "MRU",
+			"also": []
+		},
+		"MUS": {
+			"main": "MUR",
+			"also": []
+		},
+		"MAR": {
+			"main": "MAD",
+			"also": []
+		},
+		"MOZ": {
+			"main": "MZN",
+			"also": []
+		},
+		"NAM": {
+			"main": "NAD",
+			"also": [
+				"ZAR"
+			]
+		},
+		"NER": {
+			"main": "XOF",
+			"also": []
+		},
+		"NGA": {
+			"main": "NGN",
+			"also": []
+		},
+		"RWA": {
+			"main": "RWF",
+			"also": []
+		},
+		"STP": {
+			"main": "STN",
+			"also": []
+		},
+		"SEN": {
+			"main": "XOF",
+			"also": []
+		},
+		"SYC": {
+			"main": "SCR",
+			"also": []
+		},
+		"SLE": {
+			"main": "SLE",
+			"also": []
+		},
+		"SOM": {
+			"main": "SOS",
+			"also": []
+		},
+		"ZAF": {
+			"main": "ZAR",
+			"also": []
+		},
+		"SDS": {
+			"main": "SSP",
+			"also": []
+		},
+		"SDN": {
+			"main": "SDG",
+			"also": []
+		},
+		"TZA": {
+			"main": "TZS",
+			"also": []
+		},
+		"TGO": {
+			"main": "XOF",
+			"also": []
+		},
+		"TUN": {
+			"main": "TND",
+			"also": []
+		},
+		"UGA": {
+			"main": "UGX",
+			"also": []
+		},
+		"ZMB": {
+			"main": "ZMW",
+			"also": []
+		},
+		"ZWE": {
+			"main": "USD",
+			"also": [
+				"ZWG"
+			]
+		},
+		"ATG": {
+			"main": "XCD",
+			"also": []
+		},
+		"BHS": {
+			"main": "BSD",
+			"also": []
+		},
+		"BRB": {
+			"main": "BBD",
+			"also": []
+		},
+		"BLZ": {
+			"main": "BZD",
+			"also": []
+		},
+		"CAN": {
+			"main": "CAD",
+			"also": []
+		},
+		"CRI": {
+			"main": "CRC",
+			"also": []
+		},
+		"CUB": {
+			"main": "CUP",
+			"also": []
+		},
+		"DMA": {
+			"main": "XCD",
+			"also": []
+		},
+		"DOM": {
+			"main": "DOP",
+			"also": []
+		},
+		"SLV": {
+			"main": "USD",
+			"also": []
+		},
+		"GRD": {
+			"main": "XCD",
+			"also": []
+		},
+		"GTM": {
+			"main": "GTQ",
+			"also": []
+		},
+		"HTI": {
+			"main": "HTG",
+			"also": [
+				"USD"
+			]
+		},
+		"HND": {
+			"main": "HNL",
+			"also": []
+		},
+		"JAM": {
+			"main": "JMD",
+			"also": []
+		},
+		"MEX": {
+			"main": "MXN",
+			"also": []
+		},
+		"NIC": {
+			"main": "NIO",
+			"also": []
+		},
+		"PAN": {
+			"main": "USD",
+			"also": [
+				"PAB"
+			]
+		},
+		"KNA": {
+			"main": "XCD",
+			"also": []
+		},
+		"LCA": {
+			"main": "XCD",
+			"also": []
+		},
+		"VCT": {
+			"main": "XCD",
+			"also": []
+		},
+		"TTO": {
+			"main": "TTD",
+			"also": []
+		},
+		"USA": {
+			"main": "USD",
+			"also": []
+		},
+		"ARG": {
+			"main": "ARS",
+			"also": []
+		},
+		"BOL": {
+			"main": "BOB",
+			"also": []
+		},
+		"BRA": {
+			"main": "BRL",
+			"also": []
+		},
+		"CHL": {
+			"main": "CLP",
+			"also": []
+		},
+		"COL": {
+			"main": "COP",
+			"also": []
+		},
+		"ECU": {
+			"main": "USD",
+			"also": []
+		},
+		"GUY": {
+			"main": "GYD",
+			"also": []
+		},
+		"PRY": {
+			"main": "PYG",
+			"also": []
+		},
+		"PER": {
+			"main": "PEN",
+			"also": []
+		},
+		"SUR": {
+			"main": "SRD",
+			"also": []
+		},
+		"URY": {
+			"main": "UYU",
+			"also": []
+		},
+		"VEN": {
+			"main": "VES",
+			"also": []
+		},
+		"AUS": {
+			"main": "AUD",
+			"also": []
+		},
+		"FJI": {
+			"main": "FJD",
+			"also": []
+		},
+		"KIR": {
+			"main": "AUD",
+			"also": []
+		},
+		"MHL": {
+			"main": "USD",
+			"also": []
+		},
+		"FSM": {
+			"main": "USD",
+			"also": []
+		},
+		"NRU": {
+			"main": "AUD",
+			"also": []
+		},
+		"NZL": {
+			"main": "NZD",
+			"also": []
+		},
+		"PLW": {
+			"main": "USD",
+			"also": []
+		},
+		"PNG": {
+			"main": "PGK",
+			"also": []
+		},
+		"WSM": {
+			"main": "WST",
+			"also": []
+		},
+		"SLB": {
+			"main": "SBD",
+			"also": []
+		},
+		"TON": {
+			"main": "TOP",
+			"also": []
+		},
+		"TUV": {
+			"main": "AUD",
+			"also": []
+		},
+		"VUT": {
+			"main": "VUV",
+			"also": []
+		}
 	},
 	"currencies": {
 		"AED": {
@@ -658,11 +860,6 @@
 			"name": "Bangladeshi Taka",
 			"iso": "Taka",
 			"symbol": "৳"
-		},
-		"BGN": {
-			"name": "Bulgarian Lev",
-			"iso": "Bulgarian Lev",
-			"symbol": null
 		},
 		"BHD": {
 			"name": "Bahraini Dinar",
@@ -748,11 +945,6 @@
 			"name": "Costa Rican Colón",
 			"iso": "Costa Rican Colon",
 			"symbol": "₡"
-		},
-		"CUC": {
-			"name": "Cuban Convertible Peso",
-			"iso": "Peso Convertible",
-			"symbol": "$"
 		},
 		"CUP": {
 			"name": "Cuban Peso",
@@ -1194,11 +1386,6 @@
 			"iso": "Dobra",
 			"symbol": "Db"
 		},
-		"SVC": {
-			"name": "Salvadoran Colón",
-			"iso": "El Salvador Colon",
-			"symbol": null
-		},
 		"SYP": {
 			"name": "Syrian Pound",
 			"iso": "Syrian Pound",
@@ -1277,11 +1464,6 @@
 		"UZS": {
 			"name": "Uzbekistani Som",
 			"iso": "Uzbekistan Sum",
-			"symbol": null
-		},
-		"VED": {
-			"name": "Bolívar Soberano",
-			"iso": "Bolívar Soberano",
 			"symbol": null
 		},
 		"VES": {

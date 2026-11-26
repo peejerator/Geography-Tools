@@ -10,7 +10,7 @@
 import {
 	geoOrthographic, geoNaturalEarth1, geoPath, geoGraticule10, geoContains, geoBounds, geoCentroid, geoDistance, geoArea, feature,
 } from './geo.js';
-import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks, setCapitalsReverse } from './subjects.js';
+import { norm, subjectFor, makeChecker, flagUrl, flagLabel, setFlagVersions, resetFlagPicks, setCapitalsReverse, setAnyCurrency } from './subjects.js';
 import { EN, t, useLanguage, lang, locale, nameOf, capitalOf, placeName, waterName } from './text.js';
 
 const $ = (id) => document.getElementById(id);
@@ -146,6 +146,7 @@ const state = {
 	format: oneOf(store.get('format', 'click'), ['click', 'type'], 'click'),
 	region: validRegion(store.get('region', 'world')),
 	either: S.versions === true && store.get('flagVersions', 'main') === 'either', // World Flags: ask about either version of a flag
+	any: S.anyCurrency === true && store.get('acceptCurrency', 'main') === 'any', // World Currencies: any legal tender counts when typed
 	// World Capitals' "Type the country": typing, with the capital given (format stays 'type')
 	reverse: S.reversible === true && store.get('reverse', false) === true,
 	mix: store.get('mixRegions', false) === true, // the rail's Combine toggle: a click adds or removes a region
@@ -174,6 +175,7 @@ const BY_ID = new Map();
 const LOD = { xlow: null, low: null, mid: null, high: null }; // GeoJSON features at four levels of detail (same order)
 setFlagVersions(state.either);
 setCapitalsReverse(state.reverse && state.format === 'type');
+setAnyCurrency(state.any);
 let META = []; // per feature: { i, id, country, name, of, c, r, area, box }
 
 const inRegion = (c, key) => key === 'world' || c.region === key || (SUB_IDS.has(key) && SUB_IDS.get(key).has(c.id));
@@ -1932,7 +1934,7 @@ function skip() {
 	renderStats();
 }
 function bestKey() {
-	return `${state.mode}|${fmtKey()}|${state.level}|${state.region}${state.either ? '|either' : ''}`;
+	return `${state.mode}|${fmtKey()}|${state.level}|${state.region}${state.either ? '|either' : ''}${state.any ? '|any' : ''}`;
 }
 function finishSession() {
 	session.end = performance.now();
@@ -2279,6 +2281,10 @@ function renderSegs() {
 	$('levelHint').textContent = LEVEL_HINT[state.format][state.level]();
 	$('levelBox').hidden = state.mode === 'study';
 	$('formatSeg').closest('section').hidden = state.mode === 'study'; // Study asks nothing
+	if ($('acceptBox')) {
+		for (const b of $('acceptSeg').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === (state.any ? 'any' : 'main')));
+		$('acceptHint').textContent = t(state.any ? 'accept_any_hint' : 'accept_main_hint');
+	}
 	if ($('versionBox')) {
 		for (const b of $('versionSeg').querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.v === (state.either ? 'either' : 'main')));
 		$('versionHint').textContent = t(state.either ? 'versions_either_hint' : 'versions_main_hint');
@@ -2390,6 +2396,19 @@ $('levelSeg').addEventListener('click', (e) => {
 	guardTest(t('changing_level'), () => {
 		state.level = b.dataset.v;
 		store.set('level', state.level);
+		renderSegs();
+		renderBest();
+		startSession();
+	});
+});
+$('acceptSeg')?.addEventListener('click', (e) => {
+	const b = e.target.closest('button[data-v]');
+	if (!b || (b.dataset.v === 'any') === state.any) return;
+	guardTest(t('changing_level'), () => {
+		state.any = b.dataset.v === 'any';
+		store.set('acceptCurrency', b.dataset.v);
+		setAnyCurrency(state.any);
+		checkAnswer = makeChecker(S, COUNTRIES); // the answers changed
 		renderSegs();
 		renderBest();
 		startSession();

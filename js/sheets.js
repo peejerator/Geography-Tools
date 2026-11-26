@@ -86,8 +86,11 @@ body.hints-shown .hint-i { display: none; }`;
 	const body = prefs.querySelector('.sheet-body');
 	const lang = document.getElementById('langSel')?.closest('section');
 	if (lang) body.appendChild(lang);
-	const versions = document.getElementById('versionBox');
-	if (versions) body.appendChild(versions);
+	// World Flags' flag versions, World Currencies' typed answers
+	for (const id of ['versionBox', 'acceptBox']) {
+		const box = document.getElementById(id);
+		if (box) body.appendChild(box);
+	}
 	const KEY = 'geography-tools.hintsShown';
 	let shown = false;
 	try {

@@ -1,13 +1,16 @@
 #!/usr/bin/env node
-// Builds currency-atlas/data/currencies.json: the currencies each of the 197 countries uses, for World
-// Currencies. Sources:
-//  - which currencies: ISO 4217 List One, from SIX, the ISO 4217 maintenance agency
+// Builds currency-atlas/data/currencies.json for World Currencies: each of the 197 countries' main currency
+// (the one asked about) and any others also legal tender there. Sources, both downloaded when it runs:
+//  - ISO 4217 List One, from SIX, the ISO 4217 maintenance agency
 //    (https://www.six-group.com/en/products-services/financial-information/data-standards.html). Fund codes
-//    (Bolivia's Mvdol, Chile's Unidad de Fomento...) are left out: they aren't money people use.
-//  - English names and symbols: the Unicode CLDR, through Node's Intl (the same data browsers use, which is
-//    also how the page names currencies in its other languages).
+//    and units of account (Bolivia's Mvdol, Chile's Unidad de Fomento...) are left out: nobody pays with them.
+//  - The Unicode CLDR's currency data (cldr-json on GitHub): which of those are current tender in each
+//    country, and which comes first. Its English names and symbols come through Node's Intl (the same data
+//    browsers use, which is also how the page names currencies in its other languages).
+// A country's currencies are the ones both list as current; its main currency is CLDR's first, except where
+// MAIN says otherwise (each with its reason). Where the two sources disagree it says so, for checking.
 //
-//   node scripts/build-currencies.mjs                 downloads the current list from SIX
+//   node scripts/build-currencies.mjs                 downloads the current ISO list from SIX
 //   node scripts/build-currencies.mjs list-one.xml    uses a copy of it
 //
 // The ISO list names "entities" its own way ("BOLIVIA (PLURINATIONAL STATE OF)"), so each is matched to a
@@ -19,6 +22,13 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'currency-atlas', 'data', 'currencies.json');
 const SIX = 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml';
+const CLDR = 'https://raw.githubusercontent.com/unicode-org/cldr-json/main/cldr-json/cldr-core/supplemental/currencyData.json';
+// The main currency, where it isn't CLDR's first: what people mainly pay with (checked November 2026)
+const MAIN = {
+	PAN: ['USD', 'the balboa is only coins; US banknotes are the main cash (Wikipedia, Panamanian balboa)'],
+	ZWE: ['USD', 'about 70% of transactions are in US dollars since the ZiG came in (Wikipedia, Zimbabwe Gold)'],
+	LSO: ['LSL', 'Lesotho’s own currency, at par with the rand and used alongside it'],
+};
 
 // ISO entity names that don't match the country's name in countries.json (or its other names)
 const ISO_NAMES = {
@@ -85,6 +95,15 @@ const entries = [...xml.matchAll(/<CcyNtry>([\s\S]*?)<\/CcyNtry>/g)].map(([, e])
 	fund: /<CcyNm IsFund="true"/.test(e),
 }));
 
+const cldr = (await fetch(CLDR).then((r) => {
+	if (!r.ok) throw new Error(`HTTP ${r.status} from ${CLDR}`);
+	return r.json();
+})).supplemental.currencyData.region;
+const cldrVersion = (await fetch(CLDR.replace('supplemental/currencyData.json', 'package.json')).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))).version ?? 'main';
+// CLDR's current tender currencies for a two-letter region code, in its order
+const cldrNow = (cc) =>
+	(cldr[cc] ?? []).map((o) => Object.entries(o)[0]).filter(([, v]) => !v._to && v._tender !== 'false').map(([k]) => k);
+
 const countries = JSON.parse(await readFile(join(ROOT, 'capital-atlas', 'data', 'countries.json'), 'utf8'));
 const list = Array.isArray(countries) ? countries : countries.countries;
 const fold = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/[^A-Z]/g, '');
@@ -114,9 +133,31 @@ for (const e of entries) {
 	isoNames[e.code] = e.isoName;
 }
 for (const [id, codes] of Object.entries(NOT_IN_ISO)) if (list.some((c) => c.id === id) && !out[id]) out[id] = codes;
-// a country's own currency first (Bhutan: the ngultrum, then the Indian rupee): fewest users first
-const users = (code) => Object.values(out).filter((v) => v.includes(code)).length;
-for (const id in out) out[id].sort((a, b) => users(a) - users(b));
+// CLDR names countries by two letters: from its own table of three-letter codes, or these
+const mappings = await fetch(CLDR.replace('currencyData.json', 'codeMappings.json')).then((r) => {
+	if (!r.ok) throw new Error(`HTTP ${r.status} for CLDR codeMappings.json`);
+	return r.json();
+});
+const alpha2 = new Map(Object.entries(mappings.supplemental.codeMappings).filter(([, v]) => v._alpha3).map(([k, v]) => [v._alpha3, k]));
+const CC = { KOS: 'XK', PSX: 'PS', SDS: 'SS' };
+const report = [];
+const result = {};
+for (const c of list) {
+	const iso = out[c.id] ?? [];
+	const cc = CC[c.id] ?? alpha2.get(c.id);
+	if (!cc) report.push(`${c.id} ${c.name}: no two-letter code, ISO only`);
+	const now = cc ? cldrNow(cc) : [];
+	// current in both (or, where one has nothing for the country, the other)
+	let codes = now.length ? now.filter((x) => !iso.length || iso.includes(x) || NOT_IN_ISO[c.id]?.includes(x)) : iso;
+	if (!codes.length) codes = now.length ? now : iso; // no overlap: CLDR, which dates each change (Bulgaria's euro)
+	const onlyIso = iso.filter((x) => !now.includes(x)), onlyCldr = now.filter((x) => !iso.includes(x));
+	if (now.length && (onlyIso.length || onlyCldr.length))
+		report.push(`${c.id} ${c.name}: ISO ${iso.join('+') || '-'}, CLDR ${now.join('+') || '-'} → ${codes.join('+')}`);
+	const [forced, why] = MAIN[c.id] ?? [];
+	const main = forced ?? codes[0];
+	if (forced) report.push(`${c.id} ${c.name}: main ${forced} (${why})`);
+	result[c.id] = { main, also: [...new Set([...codes, ...(forced ? iso : [])])].filter((x) => x !== main) };
+}
 
 const missing = list.filter((c) => !out[c.id]).map((c) => `${c.id} ${c.name}`);
 if (missing.length) {
@@ -124,18 +165,17 @@ if (missing.length) {
 	process.exit(1);
 }
 
-const codes = [...new Set(Object.values(out).flat())].sort();
+const codes = [...new Set(Object.values(result).flatMap((r) => [r.main, ...r.also]))].sort();
 const currencies = Object.fromEntries(
 	codes.map((code) => [code, { name: en.of(code), iso: isoNames[code] ?? en.of(code), symbol: symbolOf(code) }]),
 );
 const data = {
-	about: `Currencies by country: ISO 4217 List One published ${published} (SIX, for ISO), funds left out; English names and symbols from the Unicode CLDR (Node ${process.versions.node}, CLDR ${process.versions.cldr}). Built by scripts/build-currencies.mjs.`,
+	about: `Each country's main currency and any others also legal tender: ISO 4217 List One published ${published} (SIX, for ISO; funds left out) and CLDR currency data (${cldrVersion}); English names and symbols from the Unicode CLDR (Node ${process.versions.node}, CLDR ${process.versions.cldr}). Built by scripts/build-currencies.mjs.`,
 	published,
-	countries: Object.fromEntries(list.map((c) => [c.id, out[c.id]])),
+	countries: result,
 	currencies,
 };
 await writeFile(OUT, JSON.stringify(data, null, '\t') + '\n');
-const shared = codes.filter((code) => Object.values(out).filter((v) => v.includes(code)).length > 1);
-console.log(`${list.length} countries, ${codes.length} currencies (ISO list of ${published}) → ${OUT}`);
-console.log(`Used by more than one country: ${shared.join(', ')}`);
-console.log(`More than one currency: ${Object.entries(out).filter(([, v]) => v.length > 1).map(([id, v]) => `${id} ${v.join('+')}`).join(', ')}`);
+console.log(`${list.length} countries, ${codes.length} currencies (ISO list of ${published}, CLDR ${cldrVersion}) → ${OUT}`);
+console.log(`\nWhere ISO and CLDR differ, and main currencies set by hand:\n  ${report.join('\n  ')}`);
+console.log(`\nMore than one currency: ${Object.entries(result).filter(([, v]) => v.also.length).map(([id, v]) => `${id} ${v.main}+${v.also.join('+')}`).join(', ')}`);
