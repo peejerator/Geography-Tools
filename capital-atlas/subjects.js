@@ -404,7 +404,6 @@ const currencies = {
 	missClick: (c) => t('capitals.miss_click', { name: nameOf(c) }),
 	// another country that pays with the same: right too (the euro asked, Germany clicked for France)
 	sameAnswer: (asked, other) => sameCurrencies(asked, other),
-	alsoMsg: (asked, other) => t('currencies.also', { name: nameOf(other), currency: currencyLabel(asked), asked: nameOf(asked) }),
 	callout: (c) => ({ title: currencyLabel(c), sub: nameOf(c) }),
 	label: (c) => currencyLabel(c),
 	searchSub: (c) => mainOf(c) ?? '', // beside a country in Find a country: its main currency's code
@@ -452,7 +451,7 @@ export function makeChecker(S, list) {
 		const other = index.get(n);
 		// (World Currencies: another country paying with the same currencies is right too)
 		const twin = S.sameAnswer && list.find((o) => o !== c && S.sameAnswer(c, o) && S.forms(o).map(norm).includes(n));
-		if (twin) return { ok: true, note: S.alsoMsg(c, twin) };
+		if (twin) return { ok: true, twin }; // the app answers that one instead (swapQuestion)
 		if (other && other !== c) return { ok: false, msg: S.otherMsg(other) + tell };
 		const slack = strict ? 0 : n.length >= 8 ? 2 : n.length >= 5 ? 1 : 0;
 		if (slack && forms.some((f) => editDistance(n, f) <= slack)) return { ok: true, close: true, note: t('close_note', { answer: S.answer(c) }) };
