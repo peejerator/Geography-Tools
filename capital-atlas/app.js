@@ -2036,6 +2036,8 @@ function renderChoices() {
 		form.appendChild(box);
 	}
 	box.hidden = false;
+	// the choice just picked is going away: don't leave it (or one in its place) focused
+	if (box.contains(document.activeElement)) document.activeElement.blur();
 	const right = S.answerChoice?.(session.current);
 	box.replaceChildren(
 		...opts.map((o) => {
