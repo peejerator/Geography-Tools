@@ -2,7 +2,7 @@
 // (app.js: the map, the regions, Study / Practice / Test, click and type questions) with three subjects.
 // Each page says which with <html data-subject="…">: no attribute means World Capitals. Everything
 // that differs between them is here, and nothing here touches the page. The words are in text.js.
-import { t, nameOf, capitalOf, nameForms as localNames, capitalForms as localCapitals, uiText } from './text.js';
+import { t, nameOf, capitalOf, nameForms as localNames, capitalForms as localCapitals, uiText, lang, locale } from './text.js';
 
 /* ---------------- typed answers ---------------- */
 // Letters only, accents off, lower case: "São Tomé" -> "saotome". Letters of any alphabet count (Москва,
@@ -325,7 +325,88 @@ const flags = {
 	versions: true, // has flags with more than one version (FLAG_VERSIONS), and the "Either version" setting
 	hint: (k) => t('flags.' + k + '_hint'),
 };
-export const SUBJECTS = { capitals, countries, flags };
+/* ---------------- World Currencies ---------------- */
+// What each country pays with: currency-atlas/data/currencies.json, built by scripts/build-currencies.mjs from
+// ISO 4217 (which currencies) and the Unicode CLDR (English names, symbols). Names in other languages come
+// from the browser (Intl.DisplayNames, also CLDR). Loaded by init() before the page starts.
+let CUR = null; // { countries: { id: [code…] }, currencies: { code: { name, iso, symbol } } }
+const codesOf = (c) => CUR?.countries[c.id] ?? [];
+let curNames = null; // Intl.DisplayNames for the language in use
+function currencyName(code) {
+	const en = CUR?.currencies[code]?.name ?? code;
+	if (lang() === 'en') return en;
+	try {
+		if (!curNames || curNames.resolvedOptions().locale.split('-')[0] !== locale().split('-')[0]) curNames = new Intl.DisplayNames([locale()], { type: 'currency' });
+		const n = curNames.of(code);
+		return n && n !== code ? n.charAt(0).toLocaleUpperCase(locale()) + n.slice(1) : en;
+	} catch {
+		return en;
+	}
+}
+const symbolOf = (code) => CUR?.currencies[code]?.symbol;
+// "Japanese Yen (¥)"; a country with two: "Panamanian Balboa and US Dollar ($)"
+function currencyLabel(c) {
+	const parts = codesOf(c).map((code) => currencyName(code) + (symbolOf(code) ? ` (${symbolOf(code)})` : ''));
+	try {
+		return new Intl.ListFormat(locale(), { type: 'conjunction' }).format(parts);
+	} catch {
+		return parts.join(', ');
+	}
+}
+// what a typed currency can be: its name here and in English, its ISO name ("Yen") and its code ("JPY")
+const currencyForms = (c) => codesOf(c).flatMap((code) => [currencyName(code), CUR.currencies[code].name, CUR.currencies[code].iso, code]);
+// countries paying with exactly the same currencies are the same answer (France and Germany, the euro)
+const sameCurrencies = (a, b) => {
+	const x = codesOf(a), y = codesOf(b);
+	return x.length > 0 && x.length === y.length && x.every((code) => y.includes(code));
+};
+const currencies = {
+	key: 'currencies',
+	tool: 'currency-atlas',
+	name: 'World Currencies',
+	init: () =>
+		fetch(new URL('../currency-atlas/data/currencies.json', import.meta.url)).then((r) => {
+			if (!r.ok) throw new Error('HTTP ' + r.status);
+			return r.json().then((d) => void (CUR = d));
+		}),
+	answer: rev((c) => currencyLabel(c), (c) => nameOf(c)),
+	forms: rev((c) => currencyForms(c), (c) => [...localNames(c), ...nameForms(c)]),
+	former: rev(() => [], (c) => COUNTRY_FORMER[c.id] || []),
+	formerMsg: (typed) => t('countries.former', { typed }),
+	otherMsg: rev((o) => t('currencies.other', { currency: currencyLabel(o), name: nameOf(o) }), (o) => t('currencies.other_country', { name: nameOf(o), currency: currencyLabel(o) })),
+	tell: rev((c) => t('currencies.tell', { name: nameOf(c), currency: currencyLabel(c) }), (c) => t('currencies.tell_country', { name: nameOf(c), currency: currencyLabel(c) })),
+	fact: (c) => t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }),
+	outside: (c, region) => t('currencies.outside', { name: nameOf(c), currency: currencyLabel(c), region }),
+	missClick: (c) => t('capitals.miss_click', { name: nameOf(c) }),
+	// another country that pays with the same: right too (the euro asked, Germany clicked for France)
+	sameAnswer: (asked, other) => sameCurrencies(asked, other),
+	alsoMsg: (asked, other) => t('currencies.also', { name: nameOf(other), currency: currencyLabel(asked), asked: nameOf(asked) }),
+	callout: (c) => ({ title: currencyLabel(c), sub: nameOf(c) }),
+	label: (c) => currencyLabel(c),
+	searchSub: (c) => codesOf(c).join(' · '), // beside a country in Find a country: its currency codes
+	dots: false,
+	waterNames: true,
+	around: [7, 4.5],
+	get lightTyped() {
+		return !reverse;
+	},
+	get namesAnswer() {
+		return reverse;
+	},
+	placeholder: rev(() => t('currencies.placeholder'), () => t('countries.placeholder')),
+	study: (c) => ({ name: t('capitals.pair', { name: nameOf(c), capital: currencyLabel(c) }) }),
+	clickAsk: (c) => ({ eyebrow: t('currencies.click_ask'), name: currencyLabel(c) }),
+	clickReveal: (c) => ({ eyebrow: t('here_it_is'), name: currencyLabel(c), tip: t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }) }),
+	typeAsk: rev((c) => ({ eyebrow: t('currencies.type_ask'), name: nameOf(c) }), (c) => ({ eyebrow: t('currencies.rev_type_ask'), name: currencyLabel(c) })),
+	typeReveal: rev(
+		(c) => ({ eyebrow: t('currencies.type_reveal', { name: nameOf(c) }), name: currencyLabel(c), tip: t('type_it') }),
+		(c) => ({ eyebrow: t('currencies.rev_type_reveal'), name: nameOf(c), tip: t('type_it') }),
+	),
+	hint: (k) => t('currencies.' + (reverse && k.startsWith('type') ? 'rev_' : '') + k + '_hint'),
+	reversible: true,
+};
+
+export const SUBJECTS = { capitals, countries, flags, currencies };
 export const subjectFor = (key) => SUBJECTS[key] || capitals;
 
 /* ---------------- checking a typed answer ---------------- */
@@ -344,6 +425,9 @@ export function makeChecker(S, list) {
 		const tell = ' ' + (keepSecret ? t('try_again') : S.tell(c));
 		if (S.former(c).map(norm).includes(n)) return { ok: false, msg: S.formerMsg(typed.trim()) + tell };
 		const other = index.get(n);
+		// (World Currencies: another country paying with the same currencies is right too)
+		const twin = S.sameAnswer && list.find((o) => o !== c && S.sameAnswer(c, o) && S.forms(o).map(norm).includes(n));
+		if (twin) return { ok: true, note: S.alsoMsg(c, twin) };
 		if (other && other !== c) return { ok: false, msg: S.otherMsg(other) + tell };
 		const slack = strict ? 0 : n.length >= 8 ? 2 : n.length >= 5 ? 1 : 0;
 		if (slack && forms.some((f) => editDistance(n, f) <= slack)) return { ok: true, close: true, note: t('close_note', { answer: S.answer(c) }) };

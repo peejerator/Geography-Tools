@@ -1,7 +1,7 @@
 // World Capitals (formerly Capital Atlas; the folder and saved-progress id stay capital-atlas): learn the capital of every country on a 3D globe or a flat map.
 // Built like Bone Atlas: Study, Practice and Test, by region, with two kinds of question
 // (click the country for a capital, or type the capital of a highlighted country).
-// The same page code runs World Countries (country-atlas/) and World Flags (flag-atlas/): each page
+// The same page code runs World Countries (country-atlas/), World Flags (flag-atlas/) and World Currencies (currency-atlas/): each page
 // says which with <html data-subject="…">, and what differs between them is in subjects.js.
 // There's also a hidden Images mode (press I, or open the page with #images): Study with your own
 // pictures pasted onto countries as memory hooks. See "image mode" below.
@@ -1810,7 +1810,10 @@ function onMapClick(hit) {
 	}
 	// Easy: a country already coloured green or red has been answered, so a click on it doesn't count
 	if (c.id !== session.current.id && statusOf(c.id)) return;
-	const cur = session.current, right = c.id === cur.id;
+	const cur = session.current;
+	// another country with the same answer counts (World Currencies: any country paying with the euro)
+	const twin = c.id !== cur.id && !!S.sameAnswer?.(cur, c);
+	const right = c.id === cur.id || twin;
 	if (session.phase === 'reveal') {
 		if (right) {
 			flash(c.id, 'ok');
@@ -1823,7 +1826,7 @@ function onMapClick(hit) {
 		return;
 	}
 	session.attempts++;
-	if (right) gotIt(cur);
+	if (right) gotIt(cur, twin ? S.alsoMsg(cur, c) : undefined);
 	else {
 		flash(c.id, 'bad');
 		// World Capitals says only what the answer was, never the capital of the country you clicked
@@ -2438,7 +2441,7 @@ $('search').addEventListener('input', () => {
 			const a = document.createElement('span');
 			a.textContent = nameOf(c);
 			const d = document.createElement('span');
-			d.textContent = capitalOf(c);
+			d.textContent = S.searchSub ? S.searchSub(c) : capitalOf(c); // World Currencies shows the currency
 			b.append(a, d);
 			b.addEventListener('click', () => {
 				if (!inScope(c)) {
@@ -3060,6 +3063,7 @@ async function boot() {
 			return r.json();
 		}),
 		SiteLanguage.open({ layers: [{ text: EN, files: new URL('lang/', import.meta.url) }], prefix: S.key }),
+		S.init?.(), // a tool's own data (World Currencies' currencies)
 	]);
 	bar.value = 0.8;
 	COUNTRIES = countries;
