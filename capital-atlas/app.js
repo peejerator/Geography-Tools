@@ -1746,6 +1746,16 @@ function startSession(onlyIds) {
 	renderAll();
 	nextItem();
 }
+// A question answered by another country with the same answer (World Currencies: the US dollar asked, Micronesia
+// clicked for the Marshall Islands): the other country takes its place as the question, and the one asked goes
+// back in the queue where the other was. false if the other isn't still to come.
+function swapQuestion(c) {
+	const i = session.queue.findIndex((q) => q.id === c.id);
+	if (i < 0) return false;
+	session.queue[i] = session.current;
+	session.current = c;
+	return true;
+}
 function later(ms) {
 	const id = session && session.id;
 	setTimeout(() => {
@@ -1812,9 +1822,14 @@ function onMapClick(hit) {
 	}
 	// Easy: a country already coloured green or red has been answered, so a click on it doesn't count
 	if (c.id !== session.current.id && statusOf(c.id)) return;
-	const cur = session.current;
-	// another country with the same answer counts (World Currencies: any country paying with the euro)
+	let cur = session.current;
+	// another country with the same answer (World Currencies: any country paying with the euro) is right: it
+	// becomes the question answered, and the one asked goes back in the queue
 	const twin = c.id !== cur.id && !!S.sameAnswer?.(cur, c);
+	if (twin && session.phase !== 'reveal') {
+		if (!swapQuestion(c)) return toast(t('already_had', { name: nameOf(c) }), 'bad'); // answered already
+		cur = c;
+	}
 	const right = c.id === cur.id || twin;
 	if (session.phase === 'reveal') {
 		if (right) {
@@ -1828,7 +1843,7 @@ function onMapClick(hit) {
 		return;
 	}
 	session.attempts++;
-	if (right) gotIt(cur, twin ? S.alsoMsg(cur, c) : undefined);
+	if (right) gotIt(cur);
 	else {
 		flash(c.id, 'bad');
 		// World Capitals says only what the answer was, never the capital of the country you clicked
@@ -1839,7 +1854,7 @@ function onMapClick(hit) {
 }
 function submitAnswer(text) {
 	if (!session || !session.current || session.busy || state.format !== 'type' || review) return;
-	const cur = session.current;
+	let cur = session.current;
 	// Enter with nothing typed moves on: Easy skips this country for later, Hard gives up on it
 	// (the same as the Skip / Show me button; after a reveal it goes to the next country)
 	if (!text.trim()) {
@@ -1862,6 +1877,8 @@ function submitAnswer(text) {
 	}
 	session.attempts++;
 	$('answer').value = '';
+	// typed another country with the same answer: that's the question answered (see swapQuestion)
+	if (res.ok && res.twin && swapQuestion(res.twin)) cur = session.current;
 	if (res.ok) gotIt(cur, res.note, res.close);
 	else if (typeEasy()) {
 		// Easy: keep guessing; the first wrong guess counts against this country in practice history

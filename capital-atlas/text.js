@@ -207,7 +207,7 @@ export const EN = {
 	'currencies.tell_country': 'It’s {name}’s.',
 	'currencies.fact': '{name}: {currency}.',
 	'currencies.outside': '{name}: {currency}. It’s outside {region}.',
-	'currencies.also': 'Right: {name} uses {currency} too. This one was {asked}.',
+	'already_had': 'You’ve had {name} already.',
 	'currencies.also_tender': 'Also legal tender: {list}.',
 	'accept': 'Typed answers',
 	'accept_main': 'Main currency',
