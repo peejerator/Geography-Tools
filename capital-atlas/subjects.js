@@ -2,7 +2,7 @@
 // (app.js: the map, the regions, Study / Practice / Test, click and type questions) with three subjects.
 // Each page says which with <html data-subject="…">: no attribute means World Capitals. Everything
 // that differs between them is here, and nothing here touches the page. The words are in text.js.
-import { t, nameOf, capitalOf, nameForms as localNames, capitalForms as localCapitals, uiText } from './text.js';
+import { t, nameOf, capitalOf, nameForms as localNames, capitalForms as localCapitals, uiText, lang, locale } from './text.js';
 
 /* ---------------- typed answers ---------------- */
 // Letters only, accents off, lower case: "São Tomé" -> "saotome". Letters of any alphabet count (Москва,
@@ -143,6 +143,7 @@ export const FLAG_VERSIONS = {
 	PER: { main: 'State flag', others: [['PER-civil', 'Civil flag']] },
 	POL: { main: 'Civil flag', others: [['POL-state', 'State flag']] },
 	PRY: { main: 'Front', others: [['PRY-reverse', 'Back']] },
+	PSX: { main: 'Civil flag', others: [['PSX-state', 'State flag']] },
 	SLV: { main: 'State flag', others: [['SLV-civil', 'Civil flag'], ['SLV-alt', 'Alternative state flag']] },
 	SMR: { main: 'State flag', others: [['SMR-civil', 'Civil flag']] },
 	SRB: { main: 'State flag', others: [['SRB-civil', 'Civil flag']] },
@@ -176,6 +177,7 @@ const VERSION_NOTES = {
 	NOR: 'The state flag is swallow-tailed, with a tongue in the middle.',
 	PER: 'The coat of arms is on the state flag; the civil flag is plain red, white and red.',
 	POL: 'The state flag adds the coat of arms, a white eagle, on the white stripe.',
+	PSX: 'The state flag adds the coat of arms over two crossed swords, in the top corner by the pole.',
 	PRY: 'The only national flag with different sides: the national seal on the front, the treasury seal (a lion) on the back.',
 	SLV: 'The civil flag has no coat of arms; the alternative state flag has the motto “Dios Unión Libertad” in gold instead.',
 	SMR: 'The civil flag has no coat of arms: just white over light blue.',
@@ -325,7 +327,111 @@ const flags = {
 	versions: true, // has flags with more than one version (FLAG_VERSIONS), and the "Either version" setting
 	hint: (k) => t('flags.' + k + '_hint'),
 };
-export const SUBJECTS = { capitals, countries, flags };
+/* ---------------- World Currencies ---------------- */
+// What each country pays with: currency-atlas/data/currencies.json, built by scripts/build-currencies.mjs from
+// ISO 4217 (which currencies) and the Unicode CLDR (English names, symbols). Names in other languages come
+// from the browser (Intl.DisplayNames, also CLDR). Loaded by init() before the page starts.
+let CUR = null; // { countries: { id: { main, also: [code…] } }, currencies: { code: { name, iso, symbol } } }
+const mainOf = (c) => CUR?.countries[c.id]?.main;
+const alsoOf = (c) => CUR?.countries[c.id]?.also ?? [];
+// "Any currency used there": a typed answer may be any currency that's legal tender there, not only the main one
+let anyCurrency = false;
+export function setAnyCurrency(on) {
+	anyCurrency = !!on;
+}
+let curNames = null; // Intl.DisplayNames for the language in use
+function currencyName(code) {
+	const en = CUR?.currencies[code]?.name ?? code;
+	if (lang() === 'en') return en;
+	try {
+		if (!curNames || curNames.resolvedOptions().locale.split('-')[0] !== locale().split('-')[0]) curNames = new Intl.DisplayNames([locale()], { type: 'currency' });
+		const n = curNames.of(code);
+		return n && n !== code ? n.charAt(0).toLocaleUpperCase(locale()) + n.slice(1) : en;
+	} catch {
+		return en;
+	}
+}
+const symbolOf = (code) => CUR?.currencies[code]?.symbol;
+const withSymbol = (code) => currencyName(code) + (symbolOf(code) ? ` (${symbolOf(code)})` : '');
+// the main currency, as asked and shown: "Japanese Yen (¥)"
+const currencyLabel = (c) => (mainOf(c) ? withSymbol(mainOf(c)) : '');
+// the others legal tender there, for the note: "Also legal tender: Panamanian Balboa"
+function alsoNote(c) {
+	const also = alsoOf(c);
+	if (!also.length) return '';
+	let list;
+	try {
+		list = new Intl.ListFormat(locale(), { type: 'conjunction' }).format(also.map(withSymbol));
+	} catch {
+		list = also.map(withSymbol).join(', ');
+	}
+	return t('currencies.also_tender', { list });
+}
+// what a typed currency can be: its name here and in English, its ISO name ("Yen") and its code ("JPY"); the
+// main currency, or with "Any currency used there" the others too
+// Also the currency's own word without the country's ("Dollar" for Australian Dollar, "Mark" for Bosnia-
+// Herzegovina Convertible Mark, "Renminbi" from ISO's Yuan Renminbi): the country is in the question already
+const ALT_NAMES = { MNT: ['Tögrög', 'Tugrug'] }; // spellings neither source has
+const tails = (name) => {
+	const w = name.split(/\s+/);
+	return w.slice(1).map((_, i) => w.slice(i + 1).join(' '));
+};
+const formsOf = (code) => {
+	const { name, iso } = CUR.currencies[code], local = currencyName(code);
+	return [local, name, iso, code, ...tails(local), ...tails(name), ...tails(iso), ...(ALT_NAMES[code] || [])];
+};
+const currencyForms = (c) => [mainOf(c), ...(anyCurrency ? alsoOf(c) : [])].filter(Boolean).flatMap(formsOf);
+// countries whose main currency is the same are the same answer (France and Germany, the euro)
+const sameCurrencies = (a, b) => !!mainOf(a) && mainOf(a) === mainOf(b);
+const currencies = {
+	key: 'currencies',
+	tool: 'currency-atlas',
+	name: 'World Currencies',
+	init: () =>
+		fetch(new URL('../currency-atlas/data/currencies.json', import.meta.url)).then((r) => {
+			if (!r.ok) throw new Error('HTTP ' + r.status);
+			return r.json().then((d) => void (CUR = d));
+		}),
+	answer: rev((c) => currencyLabel(c), (c) => nameOf(c)),
+	forms: rev((c) => currencyForms(c), (c) => [...localNames(c), ...nameForms(c)]),
+	former: rev(() => [], (c) => COUNTRY_FORMER[c.id] || []),
+	formerMsg: (typed) => t('countries.former', { typed }),
+	// a currency that's another country's: not named, as many share a word (franc, dollar) or a currency
+	otherMsg: rev(() => t('currencies.not_it'), (o) => t('currencies.other_country', { name: nameOf(o), currency: currencyLabel(o) })),
+	tell: rev((c) => t('currencies.tell', { name: nameOf(c), currency: currencyLabel(c) }), (c) => t('currencies.tell_country', { name: nameOf(c), currency: currencyLabel(c) })),
+	fact: (c) => t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }),
+	outside: (c, region) => t('currencies.outside', { name: nameOf(c), currency: currencyLabel(c), region }),
+	missClick: (c) => t('capitals.miss_click', { name: nameOf(c) }),
+	// another country that pays with the same: right too (the euro asked, Germany clicked for France)
+	sameAnswer: (asked, other) => sameCurrencies(asked, other),
+	alsoMsg: (asked, other) => t('currencies.also', { name: nameOf(other), currency: currencyLabel(asked), asked: nameOf(asked) }),
+	callout: (c) => ({ title: currencyLabel(c), sub: nameOf(c) }),
+	label: (c) => currencyLabel(c),
+	searchSub: (c) => mainOf(c) ?? '', // beside a country in Find a country: its main currency's code
+	dots: false,
+	waterNames: true,
+	around: [7, 4.5],
+	get lightTyped() {
+		return !reverse;
+	},
+	get namesAnswer() {
+		return reverse;
+	},
+	placeholder: rev(() => t('currencies.placeholder'), () => t('countries.placeholder')),
+	study: (c) => ({ name: t('capitals.pair', { name: nameOf(c), capital: currencyLabel(c) }), tip: alsoNote(c) }),
+	clickAsk: (c) => ({ eyebrow: t('currencies.click_ask'), name: currencyLabel(c) }),
+	clickReveal: (c) => ({ eyebrow: t('here_it_is'), name: currencyLabel(c), tip: join(t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }), alsoNote(c)) }),
+	typeAsk: rev((c) => ({ eyebrow: t('currencies.type_ask'), name: nameOf(c) }), (c) => ({ eyebrow: t('currencies.rev_type_ask'), name: currencyLabel(c) })),
+	typeReveal: rev(
+		(c) => ({ eyebrow: t('currencies.type_reveal', { name: nameOf(c) }), name: currencyLabel(c), tip: join(t('type_it'), alsoNote(c)) }),
+		(c) => ({ eyebrow: t('currencies.rev_type_reveal'), name: nameOf(c), tip: join(t('type_it'), alsoNote(c)) }),
+	),
+	hint: (k) => t('currencies.' + (reverse && k.startsWith('type') ? 'rev_' : '') + k + '_hint'),
+	reversible: true,
+	anyCurrency: true, // has the "Accept" setting (setAnyCurrency)
+};
+
+export const SUBJECTS = { capitals, countries, flags, currencies };
 export const subjectFor = (key) => SUBJECTS[key] || capitals;
 
 /* ---------------- checking a typed answer ---------------- */
@@ -344,6 +450,9 @@ export function makeChecker(S, list) {
 		const tell = ' ' + (keepSecret ? t('try_again') : S.tell(c));
 		if (S.former(c).map(norm).includes(n)) return { ok: false, msg: S.formerMsg(typed.trim()) + tell };
 		const other = index.get(n);
+		// (World Currencies: another country paying with the same currencies is right too)
+		const twin = S.sameAnswer && list.find((o) => o !== c && S.sameAnswer(c, o) && S.forms(o).map(norm).includes(n));
+		if (twin) return { ok: true, note: S.alsoMsg(c, twin) };
 		if (other && other !== c) return { ok: false, msg: S.otherMsg(other) + tell };
 		const slack = strict ? 0 : n.length >= 8 ? 2 : n.length >= 5 ? 1 : 0;
 		if (slack && forms.some((f) => editDistance(n, f) <= slack)) return { ok: true, close: true, note: t('close_note', { answer: S.answer(c) }) };
