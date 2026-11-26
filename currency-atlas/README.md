@@ -23,8 +23,8 @@ with Preferences → Typed answers → Any legal tender.
 
 Built by `node scripts/build-currencies.mjs`, which downloads two sources and uses the currencies both list as
 current: ISO 4217 List One from SIX (the maintenance agency for ISO 4217; fund codes and units of account
-left out) and the Unicode CLDR's currency data. The main currency is CLDR's first, except Panama and
-Zimbabwe (the US dollar, which most payments use) and Lesotho (the loti); the script prints its reason for
+left out) and the Unicode CLDR's currency data. The main currency is CLDR's first, except Panama (the US
+dollar: the balboa is only coins) and Lesotho (the loti); the script prints its reason for
 each, and every country where the two sources differ. English names and symbols are CLDR's, through Node's
 `Intl`; in other languages the page uses the browser's `Intl.DisplayNames` (also CLDR). Kosovo and Palestine
 aren't in the ISO list with a currency; the script gives them the euro, and the Israeli shekel and
@@ -32,4 +32,4 @@ Jordanian dinar.
 
 Checked in November 2026 against two more sources, `world-countries` (mledoze/countries) and Wikipedia's
 List of circulating currencies: all four agree on 182 of the 197 countries' currencies, and the main
-currency of every other country matches at least CLDR or Wikipedia, apart from the three set by hand.
+currency of every other country matches at least CLDR or Wikipedia, apart from the two set by hand.

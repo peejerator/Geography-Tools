@@ -7,8 +7,9 @@
 //  - The Unicode CLDR's currency data (cldr-json on GitHub): which of those are current tender in each
 //    country, and which comes first. Its English names and symbols come through Node's Intl (the same data
 //    browsers use, which is also how the page names currencies in its other languages).
-// A country's currencies are the ones both list as current; its main currency is CLDR's first, except where
-// MAIN says otherwise (each with its reason). Where the two sources disagree it says so, for checking.
+// A country's main currency is CLDR's first of those both list as current, except where MAIN says otherwise
+// (each with its reason); any others current in both, or that CLDR lists as current tender, are also legal
+// tender there. Where the two sources disagree it says so, for checking.
 //
 //   node scripts/build-currencies.mjs                 downloads the current ISO list from SIX
 //   node scripts/build-currencies.mjs list-one.xml    uses a copy of it
@@ -26,7 +27,6 @@ const CLDR = 'https://raw.githubusercontent.com/unicode-org/cldr-json/main/cldr-
 // The main currency, where it isn't CLDR's first: what people mainly pay with (checked November 2026)
 const MAIN = {
 	PAN: ['USD', 'the balboa is only coins; US banknotes are the main cash (Wikipedia, Panamanian balboa)'],
-	ZWE: ['USD', 'about 70% of transactions are in US dollars since the ZiG came in (Wikipedia, Zimbabwe Gold)'],
 	LSO: ['LSL', 'Lesotho’s own currency, at par with the rand and used alongside it'],
 };
 
@@ -156,7 +156,9 @@ for (const c of list) {
 	const [forced, why] = MAIN[c.id] ?? [];
 	const main = forced ?? codes[0];
 	if (forced) report.push(`${c.id} ${c.name}: main ${forced} (${why})`);
-	result[c.id] = { main, also: [...new Set([...codes, ...(forced ? iso : [])])].filter((x) => x !== main) };
+	// also legal tender: the rest of those, and any CLDR lists as current tender that ISO doesn't (Zimbabwe's
+	// US dollar); not ones only ISO still lists (El Salvador's colón, out of use since 2001)
+	result[c.id] = { main, also: [...new Set([...codes, ...onlyCldr, ...(forced ? iso : [])])].filter((x) => x !== main) };
 }
 
 const missing = list.filter((c) => !out[c.id]).map((c) => `${c.id} ${c.name}`);
