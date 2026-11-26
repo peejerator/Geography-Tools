@@ -158,6 +158,9 @@ body {
 .choices .choice { justify-content: center; text-align: center; white-space: normal; min-height: 38px; }
 .choices .choice:disabled { opacity: 0.35; cursor: default; }
 .choices .choice.is-right { border-color: var(--ok); color: var(--ok); }
+/* On touch screens the browser keeps "hovering" where the finger last was, so the next question's choice in the
+   same place would look picked: there, no hover highlight */
+@media (hover: none) { .choices .choice:hover { border-color: var(--line-strong); } .choices .choice.is-right:hover { border-color: var(--ok); } }
 /* Images mode buttons */
 .pinbar { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 2px; }
 .pinsize { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
