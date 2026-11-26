@@ -809,717 +809,1003 @@
 		"AED": {
 			"name": "United Arab Emirates Dirham",
 			"iso": "UAE Dirham",
-			"symbol": null
+			"symbol": null,
+			"short": "Dirham",
+			"issuer": "ARE"
 		},
 		"AFN": {
 			"name": "Afghan Afghani",
 			"iso": "Afghani",
-			"symbol": "؋"
+			"symbol": "؋",
+			"short": "Afghani",
+			"issuer": "AFG"
 		},
 		"ALL": {
 			"name": "Albanian Lek",
 			"iso": "Lek",
-			"symbol": null
+			"symbol": null,
+			"short": "Lek",
+			"issuer": "ALB"
 		},
 		"AMD": {
 			"name": "Armenian Dram",
 			"iso": "Armenian Dram",
-			"symbol": "֏"
+			"symbol": "֏",
+			"short": "Dram",
+			"issuer": "ARM"
 		},
 		"AOA": {
 			"name": "Angolan Kwanza",
 			"iso": "Kwanza",
-			"symbol": "Kz"
+			"symbol": "Kz",
+			"short": "Kwanza",
+			"issuer": "AGO"
 		},
 		"ARS": {
 			"name": "Argentine Peso",
 			"iso": "Argentine Peso",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "ARG"
 		},
 		"AUD": {
 			"name": "Australian Dollar",
 			"iso": "Australian Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "AUS"
 		},
 		"AZN": {
 			"name": "Azerbaijani Manat",
 			"iso": "Azerbaijan Manat",
-			"symbol": "₼"
+			"symbol": "₼",
+			"short": "Manat",
+			"issuer": "AZE"
 		},
 		"BAM": {
 			"name": "Bosnia-Herzegovina Convertible Mark",
 			"iso": "Convertible Mark",
-			"symbol": "KM"
+			"symbol": "KM",
+			"short": "Convertible Mark",
+			"issuer": "BIH"
 		},
 		"BBD": {
 			"name": "Barbadian Dollar",
 			"iso": "Barbados Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "BRB"
 		},
 		"BDT": {
 			"name": "Bangladeshi Taka",
 			"iso": "Taka",
-			"symbol": "৳"
+			"symbol": "৳",
+			"short": "Taka",
+			"issuer": "BGD"
 		},
 		"BHD": {
 			"name": "Bahraini Dinar",
 			"iso": "Bahraini Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "BHR"
 		},
 		"BIF": {
 			"name": "Burundian Franc",
 			"iso": "Burundi Franc",
-			"symbol": null
+			"symbol": null,
+			"short": "Franc",
+			"issuer": "BDI"
 		},
 		"BND": {
 			"name": "Brunei Dollar",
 			"iso": "Brunei Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "BRN"
 		},
 		"BOB": {
 			"name": "Bolivian Boliviano",
 			"iso": "Boliviano",
-			"symbol": "Bs"
+			"symbol": "Bs",
+			"short": "Boliviano",
+			"issuer": "BOL"
 		},
 		"BRL": {
 			"name": "Brazilian Real",
 			"iso": "Brazilian Real",
-			"symbol": "R$"
+			"symbol": "R$",
+			"short": "Real",
+			"issuer": "BRA"
 		},
 		"BSD": {
 			"name": "Bahamian Dollar",
 			"iso": "Bahamian Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "BHS"
 		},
 		"BTN": {
 			"name": "Bhutanese Ngultrum",
 			"iso": "Ngultrum",
-			"symbol": null
+			"symbol": null,
+			"short": "Ngultrum",
+			"issuer": "BTN"
 		},
 		"BWP": {
 			"name": "Botswanan Pula",
 			"iso": "Pula",
-			"symbol": "P"
+			"symbol": "P",
+			"short": "Pula",
+			"issuer": "BWA"
 		},
 		"BYN": {
 			"name": "Belarusian Ruble",
 			"iso": "Belarusian Ruble",
-			"symbol": null
+			"symbol": null,
+			"short": "Ruble",
+			"issuer": "BLR"
 		},
 		"BZD": {
 			"name": "Belize Dollar",
 			"iso": "Belize Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "BLZ"
 		},
 		"CAD": {
 			"name": "Canadian Dollar",
 			"iso": "Canadian Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "CAN"
 		},
 		"CDF": {
 			"name": "Congolese Franc",
 			"iso": "Congolese Franc",
-			"symbol": null
+			"symbol": null,
+			"short": "Franc",
+			"issuer": "COD"
 		},
 		"CHF": {
 			"name": "Swiss Franc",
 			"iso": "Swiss Franc",
-			"symbol": null
+			"symbol": null,
+			"short": "Franc",
+			"issuer": "CHE"
 		},
 		"CLP": {
 			"name": "Chilean Peso",
 			"iso": "Chilean Peso",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "CHL"
 		},
 		"CNY": {
 			"name": "Chinese Yuan",
 			"iso": "Yuan Renminbi",
-			"symbol": "¥"
+			"symbol": "¥",
+			"short": "Yuan",
+			"issuer": "CHN"
 		},
 		"COP": {
 			"name": "Colombian Peso",
 			"iso": "Colombian Peso",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "COL"
 		},
 		"CRC": {
 			"name": "Costa Rican Colón",
 			"iso": "Costa Rican Colon",
-			"symbol": "₡"
+			"symbol": "₡",
+			"short": "Colón",
+			"issuer": "CRI"
 		},
 		"CUP": {
 			"name": "Cuban Peso",
 			"iso": "Cuban Peso",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "CUB"
 		},
 		"CVE": {
 			"name": "Cape Verdean Escudo",
 			"iso": "Cabo Verde Escudo",
-			"symbol": null
+			"symbol": null,
+			"short": "Escudo",
+			"issuer": "CPV"
 		},
 		"CZK": {
 			"name": "Czech Koruna",
 			"iso": "Czech Koruna",
-			"symbol": "Kč"
+			"symbol": "Kč",
+			"short": "Koruna",
+			"issuer": "CZE"
 		},
 		"DJF": {
 			"name": "Djiboutian Franc",
 			"iso": "Djibouti Franc",
-			"symbol": null
+			"symbol": null,
+			"short": "Franc",
+			"issuer": "DJI"
 		},
 		"DKK": {
 			"name": "Danish Krone",
 			"iso": "Danish Krone",
-			"symbol": "kr"
+			"symbol": "kr",
+			"short": "Krone",
+			"issuer": "DNK"
 		},
 		"DOP": {
 			"name": "Dominican Peso",
 			"iso": "Dominican Peso",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "DOM"
 		},
 		"DZD": {
 			"name": "Algerian Dinar",
 			"iso": "Algerian Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "DZA"
 		},
 		"EGP": {
 			"name": "Egyptian Pound",
 			"iso": "Egyptian Pound",
-			"symbol": "E£"
+			"symbol": "E£",
+			"short": "Pound",
+			"issuer": "EGY"
 		},
 		"ERN": {
 			"name": "Eritrean Nakfa",
 			"iso": "Nakfa",
-			"symbol": null
+			"symbol": null,
+			"short": "Nakfa",
+			"issuer": "ERI"
 		},
 		"ETB": {
 			"name": "Ethiopian Birr",
 			"iso": "Ethiopian Birr",
-			"symbol": null
+			"symbol": null,
+			"short": "Birr",
+			"issuer": "ETH"
 		},
 		"EUR": {
 			"name": "Euro",
 			"iso": "Euro",
-			"symbol": "€"
+			"symbol": "€",
+			"short": "Euro",
+			"issuer": null
 		},
 		"FJD": {
 			"name": "Fijian Dollar",
 			"iso": "Fiji Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "FJI"
 		},
 		"GBP": {
 			"name": "British Pound",
 			"iso": "Pound Sterling",
-			"symbol": "£"
+			"symbol": "£",
+			"short": "Pound",
+			"issuer": "GBR"
 		},
 		"GEL": {
 			"name": "Georgian Lari",
 			"iso": "Lari",
-			"symbol": "₾"
+			"symbol": "₾",
+			"short": "Lari",
+			"issuer": "GEO"
 		},
 		"GHS": {
 			"name": "Ghanaian Cedi",
 			"iso": "Ghana Cedi",
-			"symbol": "GH₵"
+			"symbol": "GH₵",
+			"short": "Cedi",
+			"issuer": "GHA"
 		},
 		"GMD": {
 			"name": "Gambian Dalasi",
 			"iso": "Dalasi",
-			"symbol": null
+			"symbol": null,
+			"short": "Dalasi",
+			"issuer": "GMB"
 		},
 		"GNF": {
 			"name": "Guinean Franc",
 			"iso": "Guinean Franc",
-			"symbol": "FG"
+			"symbol": "FG",
+			"short": "Franc",
+			"issuer": "GIN"
 		},
 		"GTQ": {
 			"name": "Guatemalan Quetzal",
 			"iso": "Quetzal",
-			"symbol": "Q"
+			"symbol": "Q",
+			"short": "Quetzal",
+			"issuer": "GTM"
 		},
 		"GYD": {
 			"name": "Guyanaese Dollar",
 			"iso": "Guyana Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "GUY"
 		},
 		"HNL": {
 			"name": "Honduran Lempira",
 			"iso": "Lempira",
-			"symbol": "L"
+			"symbol": "L",
+			"short": "Lempira",
+			"issuer": "HND"
 		},
 		"HTG": {
 			"name": "Haitian Gourde",
 			"iso": "Gourde",
-			"symbol": null
+			"symbol": null,
+			"short": "Gourde",
+			"issuer": "HTI"
 		},
 		"HUF": {
 			"name": "Hungarian Forint",
 			"iso": "Forint",
-			"symbol": "Ft"
+			"symbol": "Ft",
+			"short": "Forint",
+			"issuer": "HUN"
 		},
 		"IDR": {
 			"name": "Indonesian Rupiah",
 			"iso": "Rupiah",
-			"symbol": "Rp"
+			"symbol": "Rp",
+			"short": "Rupiah",
+			"issuer": "IDN"
 		},
 		"ILS": {
 			"name": "Israeli New Shekel",
 			"iso": "New Israeli Sheqel",
-			"symbol": "₪"
+			"symbol": "₪",
+			"short": "Shekel",
+			"issuer": "ISR"
 		},
 		"INR": {
 			"name": "Indian Rupee",
 			"iso": "Indian Rupee",
-			"symbol": "₹"
+			"symbol": "₹",
+			"short": "Rupee",
+			"issuer": "IND"
 		},
 		"IQD": {
 			"name": "Iraqi Dinar",
 			"iso": "Iraqi Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "IRQ"
 		},
 		"IRR": {
 			"name": "Iranian Rial",
 			"iso": "Iranian Rial",
-			"symbol": null
+			"symbol": null,
+			"short": "Rial",
+			"issuer": "IRN"
 		},
 		"ISK": {
 			"name": "Icelandic Króna",
 			"iso": "Iceland Krona",
-			"symbol": "kr"
+			"symbol": "kr",
+			"short": "Króna",
+			"issuer": "ISL"
 		},
 		"JMD": {
 			"name": "Jamaican Dollar",
 			"iso": "Jamaican Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "JAM"
 		},
 		"JOD": {
 			"name": "Jordanian Dinar",
 			"iso": "Jordanian Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "JOR"
 		},
 		"JPY": {
 			"name": "Japanese Yen",
 			"iso": "Yen",
-			"symbol": "¥"
+			"symbol": "¥",
+			"short": "Yen",
+			"issuer": "JPN"
 		},
 		"KES": {
 			"name": "Kenyan Shilling",
 			"iso": "Kenyan Shilling",
-			"symbol": null
+			"symbol": null,
+			"short": "Shilling",
+			"issuer": "KEN"
 		},
 		"KGS": {
 			"name": "Kyrgyz Som",
 			"iso": "Som",
-			"symbol": "⃀"
+			"symbol": "⃀",
+			"short": "Som",
+			"issuer": "KGZ"
 		},
 		"KHR": {
 			"name": "Cambodian Riel",
 			"iso": "Riel",
-			"symbol": "៛"
+			"symbol": "៛",
+			"short": "Riel",
+			"issuer": "KHM"
 		},
 		"KMF": {
 			"name": "Comorian Franc",
 			"iso": "Comorian Franc",
-			"symbol": "CF"
+			"symbol": "CF",
+			"short": "Franc",
+			"issuer": "COM"
 		},
 		"KPW": {
 			"name": "North Korean Won",
 			"iso": "North Korean Won",
-			"symbol": "₩"
+			"symbol": "₩",
+			"short": "Won",
+			"issuer": "PRK"
 		},
 		"KRW": {
 			"name": "South Korean Won",
 			"iso": "Won",
-			"symbol": "₩"
+			"symbol": "₩",
+			"short": "Won",
+			"issuer": "KOR"
 		},
 		"KWD": {
 			"name": "Kuwaiti Dinar",
 			"iso": "Kuwaiti Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "KWT"
 		},
 		"KZT": {
 			"name": "Kazakhstani Tenge",
 			"iso": "Tenge",
-			"symbol": "₸"
+			"symbol": "₸",
+			"short": "Tenge",
+			"issuer": "KAZ"
 		},
 		"LAK": {
 			"name": "Laotian Kip",
 			"iso": "Lao Kip",
-			"symbol": "₭"
+			"symbol": "₭",
+			"short": "Kip",
+			"issuer": "LAO"
 		},
 		"LBP": {
 			"name": "Lebanese Pound",
 			"iso": "Lebanese Pound",
-			"symbol": "L£"
+			"symbol": "L£",
+			"short": "Pound",
+			"issuer": "LBN"
 		},
 		"LKR": {
 			"name": "Sri Lankan Rupee",
 			"iso": "Sri Lanka Rupee",
-			"symbol": "Rs"
+			"symbol": "Rs",
+			"short": "Rupee",
+			"issuer": "LKA"
 		},
 		"LRD": {
 			"name": "Liberian Dollar",
 			"iso": "Liberian Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "LBR"
 		},
 		"LSL": {
 			"name": "Lesotho Loti",
 			"iso": "Loti",
-			"symbol": null
+			"symbol": null,
+			"short": "Loti",
+			"issuer": "LSO"
 		},
 		"LYD": {
 			"name": "Libyan Dinar",
 			"iso": "Libyan Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "LBY"
 		},
 		"MAD": {
 			"name": "Moroccan Dirham",
 			"iso": "Moroccan Dirham",
-			"symbol": null
+			"symbol": null,
+			"short": "Dirham",
+			"issuer": "MAR"
 		},
 		"MDL": {
 			"name": "Moldovan Leu",
 			"iso": "Moldovan Leu",
-			"symbol": null
+			"symbol": null,
+			"short": "Leu",
+			"issuer": "MDA"
 		},
 		"MGA": {
 			"name": "Malagasy Ariary",
 			"iso": "Malagasy Ariary",
-			"symbol": "Ar"
+			"symbol": "Ar",
+			"short": "Ariary",
+			"issuer": "MDG"
 		},
 		"MKD": {
 			"name": "Macedonian Denar",
 			"iso": "Denar",
-			"symbol": null
+			"symbol": null,
+			"short": "Denar",
+			"issuer": "MKD"
 		},
 		"MMK": {
 			"name": "Myanmar Kyat",
 			"iso": "Kyat",
-			"symbol": "K"
+			"symbol": "K",
+			"short": "Kyat",
+			"issuer": "MMR"
 		},
 		"MNT": {
 			"name": "Mongolian Tugrik",
 			"iso": "Tugrik",
-			"symbol": "₮"
+			"symbol": "₮",
+			"short": "Tugrik",
+			"issuer": "MNG"
 		},
 		"MRU": {
 			"name": "Mauritanian Ouguiya",
 			"iso": "Ouguiya",
-			"symbol": null
+			"symbol": null,
+			"short": "Ouguiya",
+			"issuer": "MRT"
 		},
 		"MUR": {
 			"name": "Mauritian Rupee",
 			"iso": "Mauritius Rupee",
-			"symbol": "Rs"
+			"symbol": "Rs",
+			"short": "Rupee",
+			"issuer": "MUS"
 		},
 		"MVR": {
 			"name": "Maldivian Rufiyaa",
 			"iso": "Rufiyaa",
-			"symbol": null
+			"symbol": null,
+			"short": "Rufiyaa",
+			"issuer": "MDV"
 		},
 		"MWK": {
 			"name": "Malawian Kwacha",
 			"iso": "Malawi Kwacha",
-			"symbol": null
+			"symbol": null,
+			"short": "Kwacha",
+			"issuer": "MWI"
 		},
 		"MXN": {
 			"name": "Mexican Peso",
 			"iso": "Mexican Peso",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "MEX"
 		},
 		"MYR": {
 			"name": "Malaysian Ringgit",
 			"iso": "Malaysian Ringgit",
-			"symbol": "RM"
+			"symbol": "RM",
+			"short": "Ringgit",
+			"issuer": "MYS"
 		},
 		"MZN": {
 			"name": "Mozambican Metical",
 			"iso": "Mozambique Metical",
-			"symbol": null
+			"symbol": null,
+			"short": "Metical",
+			"issuer": "MOZ"
 		},
 		"NAD": {
 			"name": "Namibian Dollar",
 			"iso": "Namibia Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "NAM"
 		},
 		"NGN": {
 			"name": "Nigerian Naira",
 			"iso": "Naira",
-			"symbol": "₦"
+			"symbol": "₦",
+			"short": "Naira",
+			"issuer": "NGA"
 		},
 		"NIO": {
 			"name": "Nicaraguan Córdoba",
 			"iso": "Cordoba Oro",
-			"symbol": "C$"
+			"symbol": "C$",
+			"short": "Córdoba",
+			"issuer": "NIC"
 		},
 		"NOK": {
 			"name": "Norwegian Krone",
 			"iso": "Norwegian Krone",
-			"symbol": "kr"
+			"symbol": "kr",
+			"short": "Krone",
+			"issuer": "NOR"
 		},
 		"NPR": {
 			"name": "Nepalese Rupee",
 			"iso": "Nepalese Rupee",
-			"symbol": "Rs"
+			"symbol": "Rs",
+			"short": "Rupee",
+			"issuer": "NPL"
 		},
 		"NZD": {
 			"name": "New Zealand Dollar",
 			"iso": "New Zealand Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "NZL"
 		},
 		"OMR": {
 			"name": "Omani Rial",
 			"iso": "Rial Omani",
-			"symbol": null
+			"symbol": null,
+			"short": "Rial",
+			"issuer": "OMN"
 		},
 		"PAB": {
 			"name": "Panamanian Balboa",
 			"iso": "Balboa",
-			"symbol": null
+			"symbol": null,
+			"short": "Balboa",
+			"issuer": null
 		},
 		"PEN": {
 			"name": "Peruvian Sol",
 			"iso": "Sol",
-			"symbol": null
+			"symbol": null,
+			"short": "Sol",
+			"issuer": "PER"
 		},
 		"PGK": {
 			"name": "Papua New Guinean Kina",
 			"iso": "Kina",
-			"symbol": null
+			"symbol": null,
+			"short": "Kina",
+			"issuer": "PNG"
 		},
 		"PHP": {
 			"name": "Philippine Peso",
 			"iso": "Philippine Peso",
-			"symbol": "₱"
+			"symbol": "₱",
+			"short": "Peso",
+			"issuer": "PHL"
 		},
 		"PKR": {
 			"name": "Pakistani Rupee",
 			"iso": "Pakistan Rupee",
-			"symbol": "Rs"
+			"symbol": "Rs",
+			"short": "Rupee",
+			"issuer": "PAK"
 		},
 		"PLN": {
 			"name": "Polish Zloty",
 			"iso": "Zloty",
-			"symbol": "zł"
+			"symbol": "zł",
+			"short": "Zloty",
+			"issuer": "POL"
 		},
 		"PYG": {
 			"name": "Paraguayan Guarani",
 			"iso": "Guarani",
-			"symbol": "₲"
+			"symbol": "₲",
+			"short": "Guarani",
+			"issuer": "PRY"
 		},
 		"QAR": {
 			"name": "Qatari Riyal",
 			"iso": "Qatari Rial",
-			"symbol": null
+			"symbol": null,
+			"short": "Riyal",
+			"issuer": "QAT"
 		},
 		"RON": {
 			"name": "Romanian Leu",
 			"iso": "Romanian Leu",
-			"symbol": "lei"
+			"symbol": "lei",
+			"short": "Leu",
+			"issuer": "ROU"
 		},
 		"RSD": {
 			"name": "Serbian Dinar",
 			"iso": "Serbian Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "SRB"
 		},
 		"RUB": {
 			"name": "Russian Ruble",
 			"iso": "Russian Ruble",
-			"symbol": "₽"
+			"symbol": "₽",
+			"short": "Ruble",
+			"issuer": "RUS"
 		},
 		"RWF": {
 			"name": "Rwandan Franc",
 			"iso": "Rwanda Franc",
-			"symbol": "RF"
+			"symbol": "RF",
+			"short": "Franc",
+			"issuer": "RWA"
 		},
 		"SAR": {
 			"name": "Saudi Riyal",
 			"iso": "Saudi Riyal",
-			"symbol": null
+			"symbol": null,
+			"short": "Riyal",
+			"issuer": "SAU"
 		},
 		"SBD": {
 			"name": "Solomon Islands Dollar",
 			"iso": "Solomon Islands Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "SLB"
 		},
 		"SCR": {
 			"name": "Seychellois Rupee",
 			"iso": "Seychelles Rupee",
-			"symbol": null
+			"symbol": null,
+			"short": "Rupee",
+			"issuer": "SYC"
 		},
 		"SDG": {
 			"name": "Sudanese Pound",
 			"iso": "Sudanese Pound",
-			"symbol": null
+			"symbol": null,
+			"short": "Pound",
+			"issuer": "SDN"
 		},
 		"SEK": {
 			"name": "Swedish Krona",
 			"iso": "Swedish Krona",
-			"symbol": "kr"
+			"symbol": "kr",
+			"short": "Krona",
+			"issuer": "SWE"
 		},
 		"SGD": {
 			"name": "Singapore Dollar",
 			"iso": "Singapore Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "SGP"
 		},
 		"SLE": {
 			"name": "Sierra Leonean Leone",
 			"iso": "Leone",
-			"symbol": null
+			"symbol": null,
+			"short": "Leone",
+			"issuer": "SLE"
 		},
 		"SOS": {
 			"name": "Somali Shilling",
 			"iso": "Somali Shilling",
-			"symbol": null
+			"symbol": null,
+			"short": "Shilling",
+			"issuer": "SOM"
 		},
 		"SRD": {
 			"name": "Surinamese Dollar",
 			"iso": "Surinam Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "SUR"
 		},
 		"SSP": {
 			"name": "South Sudanese Pound",
 			"iso": "South Sudanese Pound",
-			"symbol": "£"
+			"symbol": "£",
+			"short": "Pound",
+			"issuer": "SDS"
 		},
 		"STN": {
 			"name": "São Tomé & Príncipe Dobra",
 			"iso": "Dobra",
-			"symbol": "Db"
+			"symbol": "Db",
+			"short": "Dobra",
+			"issuer": "STP"
 		},
 		"SYP": {
 			"name": "Syrian Pound",
 			"iso": "Syrian Pound",
-			"symbol": "£"
+			"symbol": "£",
+			"short": "Pound",
+			"issuer": "SYR"
 		},
 		"SZL": {
 			"name": "Swazi Lilangeni",
 			"iso": "Lilangeni",
-			"symbol": null
+			"symbol": null,
+			"short": "Lilangeni",
+			"issuer": "SWZ"
 		},
 		"THB": {
 			"name": "Thai Baht",
 			"iso": "Baht",
-			"symbol": "฿"
+			"symbol": "฿",
+			"short": "Baht",
+			"issuer": "THA"
 		},
 		"TJS": {
 			"name": "Tajikistani Somoni",
 			"iso": "Somoni",
-			"symbol": null
+			"symbol": null,
+			"short": "Somoni",
+			"issuer": "TJK"
 		},
 		"TMT": {
 			"name": "Turkmenistani Manat",
 			"iso": "Turkmenistan New Manat",
-			"symbol": null
+			"symbol": null,
+			"short": "Manat",
+			"issuer": "TKM"
 		},
 		"TND": {
 			"name": "Tunisian Dinar",
 			"iso": "Tunisian Dinar",
-			"symbol": null
+			"symbol": null,
+			"short": "Dinar",
+			"issuer": "TUN"
 		},
 		"TOP": {
 			"name": "Tongan Paʻanga",
 			"iso": "Pa’anga",
-			"symbol": "T$"
+			"symbol": "T$",
+			"short": "Paʻanga",
+			"issuer": "TON"
 		},
 		"TRY": {
 			"name": "Turkish Lira",
 			"iso": "Turkish Lira",
-			"symbol": "₺"
+			"symbol": "₺",
+			"short": "Lira",
+			"issuer": "TUR"
 		},
 		"TTD": {
 			"name": "Trinidad & Tobago Dollar",
 			"iso": "Trinidad and Tobago Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "TTO"
 		},
 		"TWD": {
 			"name": "New Taiwan Dollar",
 			"iso": "New Taiwan Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "TWN"
 		},
 		"TZS": {
 			"name": "Tanzanian Shilling",
 			"iso": "Tanzanian Shilling",
-			"symbol": null
+			"symbol": null,
+			"short": "Shilling",
+			"issuer": "TZA"
 		},
 		"UAH": {
 			"name": "Ukrainian Hryvnia",
 			"iso": "Hryvnia",
-			"symbol": "₴"
+			"symbol": "₴",
+			"short": "Hryvnia",
+			"issuer": "UKR"
 		},
 		"UGX": {
 			"name": "Ugandan Shilling",
 			"iso": "Uganda Shilling",
-			"symbol": null
+			"symbol": null,
+			"short": "Shilling",
+			"issuer": "UGA"
 		},
 		"USD": {
 			"name": "US Dollar",
 			"iso": "US Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": "USA"
 		},
 		"UYU": {
 			"name": "Uruguayan Peso",
 			"iso": "Peso Uruguayo",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Peso",
+			"issuer": "URY"
 		},
 		"UZS": {
 			"name": "Uzbekistani Som",
 			"iso": "Uzbekistan Sum",
-			"symbol": null
+			"symbol": null,
+			"short": "Som",
+			"issuer": "UZB"
 		},
 		"VES": {
 			"name": "Venezuelan Bolívar",
 			"iso": "Bolívar Soberano",
-			"symbol": null
+			"symbol": null,
+			"short": "Bolívar",
+			"issuer": "VEN"
 		},
 		"VND": {
 			"name": "Vietnamese Dong",
 			"iso": "Dong",
-			"symbol": "₫"
+			"symbol": "₫",
+			"short": "Dong",
+			"issuer": "VNM"
 		},
 		"VUV": {
 			"name": "Vanuatu Vatu",
 			"iso": "Vatu",
-			"symbol": null
+			"symbol": null,
+			"short": "Vatu",
+			"issuer": "VUT"
 		},
 		"WST": {
 			"name": "Samoan Tala",
 			"iso": "Tala",
-			"symbol": null
+			"symbol": null,
+			"short": "Tala",
+			"issuer": "WSM"
 		},
 		"XAF": {
 			"name": "Central African CFA Franc",
 			"iso": "CFA Franc BEAC",
-			"symbol": "FCFA"
+			"symbol": "FCFA",
+			"short": "Franc",
+			"issuer": null
 		},
 		"XCD": {
 			"name": "East Caribbean Dollar",
 			"iso": "East Caribbean Dollar",
-			"symbol": "$"
+			"symbol": "$",
+			"short": "Dollar",
+			"issuer": null
 		},
 		"XOF": {
 			"name": "West African CFA Franc",
 			"iso": "CFA Franc BCEAO",
-			"symbol": "F CFA"
+			"symbol": "F CFA",
+			"short": "Franc",
+			"issuer": null
 		},
 		"YER": {
 			"name": "Yemeni Rial",
 			"iso": "Yemeni Rial",
-			"symbol": null
+			"symbol": null,
+			"short": "Rial",
+			"issuer": "YEM"
 		},
 		"ZAR": {
 			"name": "South African Rand",
 			"iso": "Rand",
-			"symbol": "R"
+			"symbol": "R",
+			"short": "Rand",
+			"issuer": "ZAF"
 		},
 		"ZMW": {
 			"name": "Zambian Kwacha",
 			"iso": "Zambian Kwacha",
-			"symbol": "ZK"
+			"symbol": "ZK",
+			"short": "Kwacha",
+			"issuer": "ZMB"
 		},
 		"ZWG": {
 			"name": "Zimbabwean Gold",
 			"iso": "Zimbabwe Gold",
-			"symbol": null
+			"symbol": null,
+			"short": "Gold",
+			"issuer": "ZWE"
 		}
 	}
 }

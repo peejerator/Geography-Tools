@@ -150,6 +150,14 @@ body {
 .answer input:focus { outline: none; border-color: var(--scan); }
 .answer input.is-bad { border-color: var(--bad); }
 .answer .btn { flex: none; }
+/* four question types: two rows of two */
+#formatSeg { display: grid; grid-template-columns: 1fr 1fr; }
+/* Pick the currency: four choices in place of the text box */
+.answer.picking > input, .answer.picking > .btn { display: none; }
+.choices { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.choices .choice { justify-content: center; text-align: center; white-space: normal; min-height: 38px; }
+.choices .choice:disabled { opacity: 0.35; cursor: default; }
+.choices .choice.is-right { border-color: var(--ok); color: var(--ok); }
 /* Images mode buttons */
 .pinbar { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 2px; }
 .pinsize { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
@@ -527,6 +535,7 @@ body.spinning .ui, body.spinning .callout, body.spinning #leader { opacity: 0; v
         <button type="button" data-v="click" data-i18n="fmt_click">Click the country</button>
         <button type="button" data-v="type" data-i18n="fmt_type">Type the currency</button>
         <button type="button" data-v="rev" data-i18n="fmt_rev">Type the country</button>
+        <button type="button" data-v="pick" data-i18n="fmt_pick">Pick the currency</button>
       </div>
       <p class="hint" id="formatHint" style="margin-top:7px"></p>
     </section>
