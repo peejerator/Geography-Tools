@@ -369,7 +369,17 @@ function alsoNote(c) {
 }
 // what a typed currency can be: its name here and in English, its ISO name ("Yen") and its code ("JPY"); the
 // main currency, or with "Any currency used there" the others too
-const formsOf = (code) => [currencyName(code), CUR.currencies[code].name, CUR.currencies[code].iso, code];
+// Also the currency's own word without the country's ("Dollar" for Australian Dollar, "Mark" for Bosnia-
+// Herzegovina Convertible Mark, "Renminbi" from ISO's Yuan Renminbi): the country is in the question already
+const ALT_NAMES = { MNT: ['Tögrög', 'Tugrug'] }; // spellings neither source has
+const tails = (name) => {
+	const w = name.split(/\s+/);
+	return w.slice(1).map((_, i) => w.slice(i + 1).join(' '));
+};
+const formsOf = (code) => {
+	const { name, iso } = CUR.currencies[code], local = currencyName(code);
+	return [local, name, iso, code, ...tails(local), ...tails(name), ...tails(iso), ...(ALT_NAMES[code] || [])];
+};
 const currencyForms = (c) => [mainOf(c), ...(anyCurrency ? alsoOf(c) : [])].filter(Boolean).flatMap(formsOf);
 // countries whose main currency is the same are the same answer (France and Germany, the euro)
 const sameCurrencies = (a, b) => !!mainOf(a) && mainOf(a) === mainOf(b);
@@ -386,7 +396,8 @@ const currencies = {
 	forms: rev((c) => currencyForms(c), (c) => [...localNames(c), ...nameForms(c)]),
 	former: rev(() => [], (c) => COUNTRY_FORMER[c.id] || []),
 	formerMsg: (typed) => t('countries.former', { typed }),
-	otherMsg: rev((o) => t('currencies.other', { currency: currencyLabel(o), name: nameOf(o) }), (o) => t('currencies.other_country', { name: nameOf(o), currency: currencyLabel(o) })),
+	// a currency that's another country's: not named, as many share a word (franc, dollar) or a currency
+	otherMsg: rev(() => t('currencies.not_it'), (o) => t('currencies.other_country', { name: nameOf(o), currency: currencyLabel(o) })),
 	tell: rev((c) => t('currencies.tell', { name: nameOf(c), currency: currencyLabel(c) }), (c) => t('currencies.tell_country', { name: nameOf(c), currency: currencyLabel(c) })),
 	fact: (c) => t('currencies.fact', { name: nameOf(c), currency: currencyLabel(c) }),
 	outside: (c, region) => t('currencies.outside', { name: nameOf(c), currency: currencyLabel(c), region }),
