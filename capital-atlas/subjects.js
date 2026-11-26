@@ -177,7 +177,7 @@ const VERSION_NOTES = {
 	NOR: 'The state flag is swallow-tailed, with a tongue in the middle.',
 	PER: 'The coat of arms is on the state flag; the civil flag is plain red, white and red.',
 	POL: 'The state flag adds the coat of arms, a white eagle, on the white stripe.',
-	PSX: 'The state flag adds the coat of arms over two crossed swords in the red triangle.',
+	PSX: 'The state flag adds the coat of arms over two crossed swords, in the top corner by the pole.',
 	PRY: 'The only national flag with different sides: the national seal on the front, the treasury seal (a lion) on the back.',
 	SLV: 'The civil flag has no coat of arms; the alternative state flag has the motto “Dios Unión Libertad” in gold instead.',
 	SMR: 'The civil flag has no coat of arms: just white over light blue.',
