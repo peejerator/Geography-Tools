@@ -1,6 +1,6 @@
 {
-	"about": "Each country's main currency and any others also legal tender: ISO 4217 List One published 2024-06-25 (SIX, for ISO; funds left out) and CLDR currency data (49.0.0); English names and symbols from the Unicode CLDR (Node 22.23.5, CLDR 48.0). Built by scripts/build-currencies.mjs.",
-	"published": "2024-06-25",
+	"about": "Each country's main currency and any others also legal tender: ISO 4217 List One published 2026-09-17 (SIX, for ISO; funds left out) and CLDR currency data (49.0.0); English names and symbols from the Unicode CLDR (Node 26.11.1, CLDR 48.0). Built by scripts/build-currencies.mjs.",
+	"published": "2026-09-17",
 	"countries": {
 		"ALB": {
 			"main": "ALL",
@@ -599,9 +599,9 @@
 			"also": []
 		},
 		"ZWE": {
-			"main": "USD",
+			"main": "ZWG",
 			"also": [
-				"ZWG"
+				"USD"
 			]
 		},
 		"ATG": {
